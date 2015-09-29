@@ -1,7 +1,7 @@
 /*!
- * angular-directive-boilerplate
+ * angular-carousel-3d
  * 
- * Version: 0.0.8 - 2015-09-29T00:14:18.694Z
+ * Version: 0.0.1
  * License: MIT
  */
 
