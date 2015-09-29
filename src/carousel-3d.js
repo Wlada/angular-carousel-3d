@@ -393,7 +393,7 @@
 
         var carousel3d = {
             restrict: 'AE',
-            templateUrl: '../src/carousel-3d.html',
+            templateUrl: 'carousel-3d.html',
             replace: true,
             scope: {
                 ngModel: '=',

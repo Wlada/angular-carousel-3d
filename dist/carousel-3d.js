@@ -441,4 +441,5 @@
 
 
 })(window.console);
+
 angular.module("carousel3d").run(["$templateCache", function($templateCache) {$templateCache.put("carousel-3d.html","<div class=\"carousel-3d-container\"><div class=\"carousel-3d\"><img ng-repeat=\"image in vm.ngModel track by $index\" ng-src=\"{{image.src}}\" class=\"slide-3d\" ng-click=\"vm.slideClicked($index)\" ng-swipe-left=\"vm.goPrev()\" ng-swipe-right=\"vm.goNext()\"></div></div>");}]);
