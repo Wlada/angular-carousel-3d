@@ -393,7 +393,7 @@
 
         var carousel3d = {
             restrict: 'AE',
-            templateUrl: 'carousel-3d.html',
+            template: '<div class=\"carousel-3d-container\"><div class=\"carousel-3d\"><img ng-repeat=\"image in vm.ngModel track by $index\" ng-src=\"{{image.src}}\" class=\"slide-3d\" ng-click=\"vm.slideClicked($index)\" ng-swipe-left=\"vm.goPrev()\" ng-swipe-right=\"vm.goNext()\"></div></div>',
             replace: true,
             scope: {
                 ngModel: '=',
