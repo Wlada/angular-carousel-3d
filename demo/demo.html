@@ -1,0 +1,36 @@
+<!doctype html>
+<html ng-app="demo">
+  <head>
+    <meta charset="utf-8">
+    <title>AngularJS directive demo</title>
+
+    <!-- TODO: Include Angular from Bower components -->
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+
+    <link rel="stylesheet" href="demo.css">
+    <link rel="stylesheet" href="../dist/carousel-3d.css">
+  </head>
+  <body ng-controller="AppController as app">
+
+    <div class="container">
+      <h1 class="text-muted">Demo Angular 3d Carousel</h1>
+
+      <carousel3d ng-model="app.images" options="app.options"
+              on-selected-click="app.selectedClick(element, index)" on-slide-change="app.slideChanged(element, index)"></carousel3d>
+
+      <!--<input type="text" ng-model="app.image">-->
+      <!--<button ng-click="app.addImage()"></button>-->
+
+      <ul ng-repeat="image in app.images track by $index">
+        <li>{{$index}} <a href ng-click="app.removeImage($index)" style="color: red">REMOVE</a></li>
+      </ul>
+
+    </div>
+
+    <script src="../bower_components/angular-swipe/dist/angular-swipe.js"></script>
+    <script src="../src/carousel-3d.js"></script>
+    <script src="demo.js"></script>
+
+  </body>
+</html>
