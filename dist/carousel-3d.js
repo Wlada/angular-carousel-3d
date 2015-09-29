@@ -1,7 +1,7 @@
 /*!
- * angular-carousel-3d
+ * angular-directive-boilerplate
  * 
- * Version: 0.0.1
+ * Version: 0.0.8 - 2015-09-29T00:54:29.293Z
  * License: MIT
  */
 
@@ -401,7 +401,7 @@
 
         var carousel3d = {
             restrict: 'AE',
-            templateUrl: '../src/carousel-3d.html',
+            templateUrl: 'carousel-3d.html',
             replace: true,
             scope: {
                 ngModel: '=',
@@ -441,5 +441,4 @@
 
 
 })(window.console);
-
 angular.module("carousel3d").run(["$templateCache", function($templateCache) {$templateCache.put("carousel-3d.html","<div class=\"carousel-3d-container\"><div class=\"carousel-3d\"><img ng-repeat=\"image in vm.ngModel track by $index\" ng-src=\"{{image.src}}\" class=\"slide-3d\" ng-click=\"vm.slideClicked($index)\" ng-swipe-left=\"vm.goPrev()\" ng-swipe-right=\"vm.goNext()\"></div></div>");}]);
