@@ -32,9 +32,7 @@ angular.module('MyApp', ['angular-carousel-3d']);
 
 ## Directive options :
 `carousel3d-options` options object properties
-
  - `visible` number of visible slides
- - 'sourceProp' :
  - `perspective` slide distance between z=0
  - `animationSpeed` slide animation speed in ms
  - `startSlide` : index of start slide
@@ -43,4 +41,4 @@ angular.module('MyApp', ['angular-carousel-3d']);
  - `border`: width of slide border
  - `space`: space between slides
 
- `carousel3d-source-prop` image source url property
+`carousel3d-source-prop` image source url property
