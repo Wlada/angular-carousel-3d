@@ -1,35 +1,118 @@
 <!doctype html>
 <html ng-app="demo">
-  <head>
+<head>
     <meta charset="utf-8">
     <title>AngularJS directive demo</title>
-
-    <link rel="stylesheet" href="demo.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="../dist/carousel-3d.css">
-  </head>
-  <body ng-controller="AppController as app">
+    <link rel="stylesheet" href="demo.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+</head>
+<body ng-controller="AppController as app">
 
-    <div class="container">
-      <h1 class="text-muted">Demo Angular 3d Carousel</h1>
+<a href="https://github.com/Wlada/angular-carousel-3d">
+    <img style="position: absolute; top: 0; right: 0; border: 0;"
+         src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
+         alt="Fork me on GitHub"
+         data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+</a>
 
-      <carousel3d ng-model="app.images" options="app.options"
-              on-selected-click="app.selectedClick(element, index)" on-slide-change="app.slideChanged(element, index)"></carousel3d>
+<div class="container">
+    <h1 class="text-muted">Demo Angular 3d Carousel</h1>
 
-      <!--<input type="text" ng-model="app.image">-->
-      <!--<button ng-click="app.addImage()"></button>-->
+    <carousel3d ng-model="app.images" carousel3d-options="app.options"
+                carousel3d-source-prop="src"
+                on-selected-click="app.selectedClick(index)" on-slide-change="app.slideChanged(index)"></carousel3d>
 
-      <ul ng-repeat="image in app.images track by $index">
-        <li>{{$index}} <a href ng-click="app.removeImage($index)" style="color: red">REMOVE</a></li>
-      </ul>
+    <!--<input type="text" ng-model="app.image">-->
+    <!--<button ng-click="app.addImage()"></button>-->
 
+
+    <div class="row">
+        <div class="col-xs-6">
+
+            <h3>Props</h3>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="numVisible">Visible:</label>
+                        <input type="number" ng-model="app.options.visible" id="numVisible" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="numWidth">Width:</label>
+                        <input type="number" ng-model="app.options.width" id="numWidth" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numHeight">Height:</label>
+                        <input type="number" ng-model="app.options.height" id="numHeight" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numStartSlide">Start slide:</label>
+                        <input type="number" ng-model="app.options.startSlide" id="numStartSlide" class="form-control">
+                    </div>
+                </div>
+                <div class="col-xs-6">
+
+                    <div class="form-group">
+                        <label for="numBorder">Border size:</label>
+                        <input type="number" ng-model="app.options.border" id="numBorder" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numSpace">Space between slides:</label>
+                        <input type="number" ng-model="app.options.space" id="numSpace" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numPerspective">Slide perspective:</label>
+                        <input type="number" ng-model="app.options.perspective" id="numPerspective" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+
+            <h3>Slides</h3>
+
+
+            <div class="form-group">
+                <label for="slideSrc">Image source:</label>
+
+                <input type="text" ng-model="app.slideSrc" id="slideSrc" placeholder="Image source" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <button ng-click="app.addImage(app.slideSrc)" class="btn btn-md btn-success">Add slide</button>
+            </div>
+
+            <ol class="list">
+                <li ng-repeat="image in app.images track by $index" class="clearfix">
+                    <span>Slide {{$index}}</span>
+                    <button type="button" class="btn btn-sm btn-danger pull-right"
+                            ng-click="app.removeImage($index)">Remove</button>
+                </li>
+            </ol>
+        </div>
     </div>
 
-    <script src="../bower_components/angular/angular.js"></script>
-    <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="../bower_components/angular-swipe/dist/angular-swipe.js"></script>
-    <script src="../dist/carousel-3d.js"></script>
+</div>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-    <script src="demo.js"></script>
 
-  </body>
+<script src="../bower_components/angular/angular.js"></script>
+<script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="../bower_components/angular-swipe/dist/angular-swipe.js"></script>
+<script src="../dist/carousel-3d.js"></script>
+
+<script src="demo.js"></script>
+
+</body>
 </html>

@@ -1,12 +1,12 @@
 /*!
  * angular-directive-boilerplate
  * 
- * Version: 0.0.8 - 2015-10-01T04:55:50.187Z
+ * Version: 0.0.8 - 2015-10-01T19:25:38.022Z
  * License: MIT
  */
 
 
-(function (console) {
+(function () {
     'use strict';
 
     angular
@@ -19,15 +19,10 @@
     // ==
     // == Directive Controller
     // ========================================
-    Carousel3dController.$inject = ['$scope', '$element', '$attrs', '$timeout'];
+    Carousel3dController.$inject = ['$scope', '$element', '$attrs', '$timeout', '$log'];
 
-    function Carousel3dController($scope, $element, $attrs, $timeout) {
+    function Carousel3dController($scope, $element, $attrs, $timeout, $log) {
         var vm = this;
-
-        //== Carousel properties
-        var props = null;
-
-        console.log(vm);
 
         // == Bind function to controller
         vm.init = init;
@@ -35,12 +30,24 @@
         vm.goPrev = goPrev;
         vm.goNext = goNext;
 
+        //== Carousel properties
+        var props = null,
+            $wrapper = $element.children();
+
+        //TODO: Debug problem with $watchGroup and change $watch to $watchGroup
+
         $scope.$watch('vm.ngModel', function (data) {
 
             $timeout(function () {
                 init();
             });
+        }, true);
 
+        $scope.$watch('vm.carousel3dOptions', function (data) {
+
+            $timeout(function () {
+                init();
+            });
         }, true);
 
         function init() {
@@ -57,7 +64,6 @@
                 animationSpeed: 500,
                 startSlide: 0,
                 dir: 'ltr',
-                degree: 0,
                 total: 0,
                 slide: 0,
                 current: null,
@@ -69,30 +75,39 @@
                 lock: false
             };
 
-            var slides = $element.children().children();
+            var $slides = $wrapper.children();
 
-            if (!slides.length > 0) {
+            if (!$slides.length > 0) {
                 return false
             }
 
-            angular.extend(props, vm.options);
+            angular.extend(props, vm.carousel3dOptions);
+
+            $wrapper.css({
+                'width': props.width + props.border + 'px',
+                'height': props.height + props.border + 'px'
+            });
 
             //== Find slides
-            for (var i = 0; i < slides.length; i++) {
+            for (var i = 0; i < $slides.length; i++) {
 
-                var slide = slides[i],
-                    $slide = angular.element(slide);
+                var slide = $slides[i],
+                    $slide = angular.element(slide),
+                    attributes = {
+                        'outerwidth': props.width + props.border,
+                        'outerheight': props.height + props.border,
+                        'width': props.width,
+                        'height': props.height,
+                        'index': i
+                    },
+                    cssStyles = {
+                        visibility: 'hidden',
+                        'border-width': props.border + 'px'
+                    };
 
-                $slide.attr('outerwidth', props.width + props.border);
-                $slide.attr('outerheight', props.height + props.border);
-                $slide.attr('width', props.width);
-                $slide.attr('height', props.height);
-                $slide.attr('index', i);
+                $slide.attr(attributes);
 
-                $slide.css({
-                    visibility: 'hidden',
-                    'border-width': props.border + 'px'
-                });
+                $slide.css(cssStyles);
 
                 props.slides.push($slide);
             }
@@ -104,7 +119,9 @@
             props.slide = props.startSlide;
 
             //Set initial currentSlide
-            props.currentSlide = angular.element(props.slides).eq(props.slide);
+
+
+            props.currentSlide = props.slides[props.slide];
 
             //== Fix slides number
             props.visible = (props.visible > props.total) ? props.total : props.visible;
@@ -147,7 +164,7 @@
                 //props.onSlideShowEnd.call(this);
             }
 
-            props.currentSlide = angular.element(props.slides).eq(props.slide);
+            props.currentSlide = props.slides[props.slide];
 
             for (var i = 0; i < props.slides.length; i++) {
                 props.slides[i].removeClass('current');
@@ -231,7 +248,6 @@
 
         function animationEnd() {
             props.lock = false;
-            props.degree = 0;
 
             if (vm.onSlideChange) {
                 vm.onSlideChange({
@@ -279,16 +295,17 @@
 
             for (var m = 1; m < num; m++) {
                 var eq1 = (props.dir == "ltr") ? (props.slide + m) % (props.total) : (props.slide - m) % (props.total);
-                props.leftItems.push(angular.element(props.slides).eq(eq1));
+                props.leftItems.push(getSlide(eq1));
+
 
                 var eq2 = (props.dir == "ltr") ? (props.slide - m) % (props.total) : (props.slide + m) % (props.total);
-                props.rightItems.push(angular.element(props.slides).eq(eq2));
+                props.rightItems.push(getSlide(eq2));
             }
 
-            props.leftOutItem = angular.element(props.slides).eq(props.slide - num);
+            props.leftOutItem = getSlide(props.slide - num);
             props.rightOutItem = ((props.total - props.slide - num) <= 0) ?
-                                 angular.element(props.slides).eq(-parseInt(props.total - props.slide - num)) :
-                                 angular.element(props.slides).eq(props.slide + num);
+                                 getSlide(-parseInt(props.total - props.slide - num)) :
+                                 getSlide(props.slide + num);
 
             var leftOut = props.leftOutItem,
                 rightOut = props.rightOutItem;
@@ -380,9 +397,6 @@
                     });
             }
 
-            console.log('total ' + props.total);
-            console.log('visible ' + props.visible);
-
             if (props.total > props.visible) {
 
                 var rCSS = setCss(props.rightOutItem, props.leftItems.length - 0.5, props.leftItems.length - 1, true),
@@ -393,6 +407,10 @@
             }
 
         }
+
+        function getSlide(index) {
+                return (index >= 0) ? props.slides[index] : props.slides[props.slides.length + index];
+        }
     }
 
     carousel3d.$inject = ['$timeout'];
@@ -401,11 +419,12 @@
 
         var carousel3d = {
             restrict: 'AE',
-            template: '<div class=\"carousel-3d-container\"><div class=\"carousel-3d\"><img ng-repeat=\"image in vm.ngModel track by $index\" ng-src=\"{{image.src}}\" class=\"slide-3d\" ng-click=\"vm.slideClicked($index)\" ng-swipe-left=\"vm.goPrev()\" ng-swipe-right=\"vm.goNext()\"></div></div>',
+            template: '<div class=\"carousel-3d-container\"><div class=\"carousel-3d\"><img ng-repeat=\"image in vm.ngModel track by $index\" ng-src=\"{{image[vm.carousel3dSourceProp]}}\" class=\"slide-3d\" ng-click=\"vm.slideClicked($index)\" ng-swipe-left=\"vm.goPrev()\" ng-swipe-right=\"vm.goNext()\"></div></div>',
             replace: true,
             scope: {
                 ngModel: '=',
-                options: '=',
+                carousel3dSourceProp: '@',
+                carousel3dOptions: '=',
                 onSelectedClick: '&',
                 onSlideChange: '&'
             },
@@ -415,15 +434,12 @@
             link: linkFunc
         };
 
-
         // ==
         // == Directive Compile
         // =======================================
         //compileFunc.$inject = ['element', 'attributes', '$attrs'];
 
         function compileFunc(element, attributes) {
-
-            console.log('=== COMPILE C3D ===');
 
             return (linkFunc);
         }
@@ -433,11 +449,10 @@
         // ========================================
 
         function linkFunc(scope, element, attrs, ctrl, transclude) {
-            console.log('=== LINK FUNC C3D ===');
         }
 
         return carousel3d;
     }
 
 
-})(window.console);
+})();
