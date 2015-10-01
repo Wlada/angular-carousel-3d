@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('carousel3d', [
+        .module('angular-carousel-3d', [
             'swipe'
         ])
         .directive('carousel3d', carousel3d)

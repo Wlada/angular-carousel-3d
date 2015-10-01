@@ -1,7 +1,7 @@
 /*!
  * angular-directive-boilerplate
  * 
- * Version: 0.0.8 - 2015-10-01T04:52:10.388Z
+ * Version: 0.0.8 - 2015-10-01T04:55:50.187Z
  * License: MIT
  */
 
@@ -10,7 +10,7 @@
     'use strict';
 
     angular
-        .module('carousel3d', [
+        .module('angular-carousel-3d', [
             'swipe'
         ])
         .directive('carousel3d', carousel3d)
