@@ -45,7 +45,6 @@ angular.module('MyApp', ['angular-carousel-3d']);
 
 ## To do:
 - Write callbacks inside readme file
-- Any content slide, not just images. This will include subdirective and carousel3d will transclude sub-directives
 - Verical Carousel option
 - Navigation option
 - Arrows option

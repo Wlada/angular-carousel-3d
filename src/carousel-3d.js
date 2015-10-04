@@ -24,8 +24,9 @@
 
     function PreloaderService($q, $rootScope) {
 
-        function Preloader(imageLocations) {
+        function Preloader(imageLocations, imageProp) {
             this.imageLocations = imageLocations;
+            this.imageProp = imageProp ;
             this.imageCount = this.imageLocations.length;
             this.loadCount = 0;
             this.errorCount = 0;
@@ -40,8 +41,8 @@
             this.promise = this.deferred.promise;
         }
 
-        Preloader.preloadImages = function (imageLocations) {
-            var preloader = new Preloader(imageLocations);
+        Preloader.preloadImages = function (imageLocations, imageProp) {
+            var preloader = new Preloader(imageLocations, imageProp);
 
             return ( preloader.load() );
         };
@@ -78,8 +79,7 @@
             this.state = this.states.LOADING;
 
             for (var i = 0; i < this.imageCount; i++) {
-                //TODO: handle src attr with directive src
-                this.loadImageLocation(this.imageLocations[i]['src']);
+                this.loadImageLocation(this.imageLocations[i][this.imageProp]);
             }
 
             return ( this.promise );
@@ -169,7 +169,7 @@
 
         $scope.$watch('[vm.ngModel, vm.carousel3dOptions]', function () {
             PreloaderService
-                .preloadImages(vm.ngModel)
+                .preloadImages(vm.ngModel, vm.carousel3dSourceProp)
                 .then(
                 function handleResolve(imageLocations) {
                     vm.isLoading = false;
