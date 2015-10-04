@@ -1,7 +1,15 @@
 /*!
  * angular-directive-boilerplate
  * 
- * Version: 0.0.8 - 2015-10-01T19:25:38.022Z
+ * Version: 0.0.8 - 2015-10-04T19:06:35.664Z
+ * License: MIT
+ */
+
+
+/*!
+ * angular-carousel-3d
+ * 
+ * Version: 0.0.4
  * License: MIT
  */
 
@@ -13,16 +21,147 @@
         .module('angular-carousel-3d', [
             'swipe'
         ])
+        .factory("PreloaderService", PreloaderService)
         .directive('carousel3d', carousel3d)
         .controller('Carousel3dController', Carousel3dController);
 
     // ==
-    // == Directive Controller
+    // == Preloader Factory
     // ========================================
-    Carousel3dController.$inject = ['$scope', '$element', '$attrs', '$timeout', '$log'];
+    PreloaderService.$inject = ['$q', '$rootScope'];
 
-    function Carousel3dController($scope, $element, $attrs, $timeout, $log) {
+    function PreloaderService($q, $rootScope) {
+
+        function Preloader(imageLocations) {
+            this.imageLocations = imageLocations;
+            this.imageCount = this.imageLocations.length;
+            this.loadCount = 0;
+            this.errorCount = 0;
+            this.states = {
+                PENDING: 1,
+                LOADING: 2,
+                RESOLVED: 3,
+                REJECTED: 4
+            };
+            this.state = this.states.PENDING;
+            this.deferred = $q.defer();
+            this.promise = this.deferred.promise;
+        }
+
+        Preloader.preloadImages = function (imageLocations) {
+            var preloader = new Preloader(imageLocations);
+
+            return ( preloader.load() );
+        };
+
+        var proto = {
+            constructor: Preloader,
+            isInitiated: isInitiated,
+            isRejected: isRejected,
+            isResolved: isResolved,
+            load: load,
+            handleImageError: handleImageError,
+            handleImageLoad: handleImageLoad,
+            loadImageLocation: loadImageLocation
+        };
+
+        function isInitiated() {
+            return ( this.state !== this.states.PENDING );
+        }
+
+        function isRejected() {
+            return ( this.state === this.states.REJECTED );
+        }
+
+        function isResolved() {
+            return ( this.state === this.states.RESOLVED );
+        }
+
+        function load() {
+
+            if (this.isInitiated()) {
+                return ( this.promise );
+            }
+
+            this.state = this.states.LOADING;
+
+            for (var i = 0; i < this.imageCount; i++) {
+                //TODO: handle src attr with directive src
+                this.loadImageLocation(this.imageLocations[i]['src']);
+            }
+
+            return ( this.promise );
+        }
+
+        function handleImageError(imageLocation) {
+            this.errorCount++;
+
+            if (this.isRejected()) {
+                return;
+            }
+
+            this.state = this.states.REJECTED;
+            this.deferred.reject(imageLocation);
+        }
+
+        function handleImageLoad(imageLocation) {
+            this.loadCount++;
+
+            if (this.isRejected()) {
+                return;
+            }
+
+            this.deferred.notify({
+                percent: Math.ceil(this.loadCount / this.imageCount * 100),
+                imageLocation: imageLocation
+            });
+
+            if (this.loadCount === this.imageCount) {
+                this.state = this.states.RESOLVED;
+                this.deferred.resolve(this.imageLocations);
+            }
+        }
+
+        function loadImageLocation(imageLocation) {
+
+            var preloader = this,
+                image = new Image();
+
+            image.onload = function (event) {
+                $rootScope.$apply(function () {
+                        preloader.handleImageLoad(event.target.src);
+                        preloader = image = event = null;
+                    }
+                );
+
+            };
+            image.onerror = function (event) {
+                $rootScope.$apply(function () {
+                        preloader.handleImageError(event.target.src);
+                        preloader = image = event = null;
+                    }
+                );
+            };
+            image.src = imageLocation;
+        }
+
+        angular.extend(Preloader.prototype, proto);
+
+        return ( Preloader );
+    }
+
+    // ==
+    // == Directive Carousel 3d Controller
+    // ========================================
+    Carousel3dController.$inject = ['$scope', '$element', '$attrs', '$timeout', '$log', 'PreloaderService'];
+
+    function Carousel3dController($scope, $element, $attrs, $timeout, $log, PreloaderService) {
         var vm = this;
+
+        vm.isLoading = true;
+        vm.isSuccessful = false;
+        vm.redered = false;
+        vm.percentLoaded = 0;
 
         // == Bind function to controller
         vm.init = init;
@@ -32,25 +171,38 @@
 
         //== Carousel properties
         var props = null,
-            $wrapper = $element.children();
+            $wrapper = null;
 
         //TODO: Debug problem with $watchGroup and change $watch to $watchGroup
 
-        $scope.$watch('vm.ngModel', function (data) {
-
-            $timeout(function () {
-                init();
-            });
-        }, true);
-
-        $scope.$watch('vm.carousel3dOptions', function (data) {
-
-            $timeout(function () {
-                init();
-            });
+        $scope.$watch('[vm.ngModel, vm.carousel3dOptions]', function () {
+            PreloaderService
+                .preloadImages(vm.ngModel)
+                .then(
+                function handleResolve(imageLocations) {
+                    vm.isLoading = false;
+                    vm.isSuccessful = true;
+                    //console.info("Preload Successful");
+                    $timeout(function () {
+                        init();
+                    });
+                },
+                function handleReject(imageLocation) {
+                    vm.isLoading = false;
+                    vm.isSuccessful = false;
+                    //console.error("Image Failed", imageLocation);
+                    //console.info("Preload Failure");
+                },
+                function handleNotify(event) {
+                    vm.percentLoaded = event.percent;
+                    //console.info("Percent loaded:", event.percent);
+                }
+            );
         }, true);
 
         function init() {
+
+            $wrapper = angular.element($element[0].querySelector('.carousel-3d'));
 
             // == Directive defaults and properties
             props = {
@@ -59,17 +211,17 @@
                 leftItems: [],
                 rightOutItem: null,
                 leftOutItem: null,
-                visible: 3,
-                perspective: 35,
-                animationSpeed: 500,
-                startSlide: 0,
+                visible:  3,
+                perspective:  35,
+                animationSpeed:  500,
+                startSlide:  0,
                 dir: 'ltr',
                 total: 0,
                 slide: 0,
                 current: null,
-                width: 480,
-                height: 360,
-                border: 10,
+                width:  480,
+                height:  360,
+                border:  10,
                 space: 'auto',
                 topSpace: 'auto',
                 lock: false
@@ -118,9 +270,7 @@
             props.startSlide = (props.startSlide < 0 || props.startSlide > props.total) ? 0 : props.startSlide;
             props.slide = props.startSlide;
 
-            //Set initial currentSlide
-
-
+            //== Set initial currentSlide
             props.currentSlide = props.slides[props.slide];
 
             //== Fix slides number
@@ -153,15 +303,15 @@
 
 
             if (props.slide == props.total - 1) {
-                //props.onLastSlide.call(this);
+                //TODO:  last slide callback
             }
 
-            //props.onBeforeChange.call(this);
+            //TODO: before chance slide
 
             props.slide = (index < 0 || index > props.total - 1) ? 0 : index;
 
             if (props.slide == props.total - 1) {
-                //props.onSlideShowEnd.call(this);
+                //TODO:  end  callback
             }
 
             props.currentSlide = props.slides[props.slide];
@@ -174,13 +324,13 @@
 
             layout(true, props.animationSpeed);
 
-            if (fastchange) {
-                return false;
-            }
-
             $timeout(function () {
                 animationEnd();
             }, props.animationSpeed);
+
+            if (fastchange) {
+                return false;
+            }
 
             return true;
         }
@@ -240,10 +390,6 @@
 
                 timeBuff += (props.animationSpeed / (diff2));
             }
-
-            $timeout(function () {
-                animationEnd();
-            }, props.animationSpeed);
         }
 
         function animationEnd() {
@@ -406,20 +552,36 @@
                 props.leftOutItem.css(lCSS);
             }
 
+            vm.redered = true;
         }
 
         function getSlide(index) {
-                return (index >= 0) ? props.slides[index] : props.slides[props.slides.length + index];
+            return (index >= 0) ? props.slides[index] : props.slides[props.slides.length + index];
         }
     }
 
+    // ==
+    // == Directive Carousel 3d
+    // ========================================
     carousel3d.$inject = ['$timeout'];
 
     function carousel3d($timeout) {
 
         var carousel3d = {
             restrict: 'AE',
-            template: '<div class=\"carousel-3d-container\"><div class=\"carousel-3d\"><img ng-repeat=\"image in vm.ngModel track by $index\" ng-src=\"{{image[vm.carousel3dSourceProp]}}\" class=\"slide-3d\" ng-click=\"vm.slideClicked($index)\" ng-swipe-left=\"vm.goPrev()\" ng-swipe-right=\"vm.goNext()\"></div></div>',
+            template: '' +
+            '<div class=\"carousel-3d-container\" ng-switch="vm.isLoading">' +
+            '   <div class="carousel-3d-loader" ng-switch-when=\"true\">' +
+            '       <div class=\"carousel-3d-loader-circle\" style=\"-webkit-transform:scale(0.75)\"><div><div></div><div></div></div></div>' +
+            '       <div class="carousel-3d-loader-percentage">{{ vm.percentLoaded }}</div>' +
+            '   </div>' +
+            '   <div ng-switch-when="false" ng-switch="vm.isSuccessful">' +
+            '       <div class=\"carousel-3d\" ng-switch-when=\"true\" ng-show="vm.redered">' +
+            '           <img ng-repeat=\"image in vm.ngModel track by $index\" ng-src=\"{{image[vm.carousel3dSourceProp]}}\" class=\"slide-3d\" ng-click=\"vm.slideClicked($index)\" ng-swipe-left=\"vm.goPrev()\" ng-swipe-right=\"vm.goNext()\">' +
+            '       </div>' +
+            '       <p ng-switch-when=\"false\">There was a problem during load</p>' +
+            '   </div>' +
+            '</div>',
             replace: true,
             scope: {
                 ngModel: '=',
@@ -453,6 +615,5 @@
 
         return carousel3d;
     }
-
 
 })();

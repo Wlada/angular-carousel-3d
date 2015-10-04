@@ -2,13 +2,15 @@
 <html ng-app="demo">
 <head>
     <meta charset="utf-8">
-    <title>AngularJS directive demo</title>
+    <title>Angular Carousel 3D | Directive demo page</title>
+    <meta name="description" content="Angular Carousel 3D directive. Demo page with properties">
+    <meta name="keywords" content="HTML, CSS, JavaScript, Angular">
+    <meta name="author" content="Vladimir Bujanovic">
+
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="../dist/carousel-3d.css">
     <link rel="stylesheet" href="demo.css">
-    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 </head>
 <body ng-controller="AppController as app">
@@ -21,20 +23,16 @@
 </a>
 
 <div class="container">
-    <h1 class="text-muted">Demo Angular 3d Carousel</h1>
+    <h1 class="text-muted">Angular carousel 3D</h1>
 
     <carousel3d ng-model="app.images" carousel3d-options="app.options"
                 carousel3d-source-prop="src"
                 on-selected-click="app.selectedClick(index)" on-slide-change="app.slideChanged(index)"></carousel3d>
 
-    <!--<input type="text" ng-model="app.image">-->
-    <!--<button ng-click="app.addImage()"></button>-->
-
-
     <div class="row">
         <div class="col-xs-6">
 
-            <h3>Props</h3>
+            <h3>Directive properties</h3>
 
             <div class="row">
                 <div class="col-xs-6">
@@ -78,7 +76,7 @@
         </div>
         <div class="col-xs-6">
 
-            <h3>Slides</h3>
+            <h3>Directive ngModel slides</h3>
 
 
             <div class="form-group">
@@ -100,15 +98,25 @@
             </ol>
         </div>
     </div>
-
 </div>
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-4467381-14']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script>
+
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-
 <script src="../bower_components/angular/angular.js"></script>
 <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+
 <script src="../bower_components/angular-swipe/dist/angular-swipe.js"></script>
 <script src="../dist/carousel-3d.js"></script>
 
