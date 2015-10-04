@@ -42,3 +42,11 @@ angular.module('MyApp', ['angular-carousel-3d']);
  - `space`: space between slides
 
 `carousel3d-source-prop` image source url property
+
+## To do:
+- Write callbacks inside readme file
+- Any content slide, not just images. This will include subdirective and carousel3d will transclude sub-directives
+- Verical Carousel option
+- Navigation option
+- Arrows option
+- Auto scroll option
