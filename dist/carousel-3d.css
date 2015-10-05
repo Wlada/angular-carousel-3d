@@ -1,7 +1,7 @@
 /*!
  * angular-directive-boilerplate
  * 
- * Version: 0.0.8 - 2015-10-04T19:03:40.165Z
+ * Version: 0.0.8 - 2015-10-05T01:17:22.398Z
  * License: MIT
  */
 
@@ -11,10 +11,11 @@
   overflow: hidden;
   position: relative;
   z-index: 0;
+  margin: 20px auto;
 }
 .carousel-3d {
   position: relative;
-  margin: 20px auto;
+  margin: 0 auto;
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   -o-transform-style: preserve-3d;

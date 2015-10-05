@@ -1,7 +1,7 @@
 /*!
  * angular-directive-boilerplate
  * 
- * Version: 0.0.8 - 2015-10-04T19:40:23.632Z
+ * Version: 0.0.8 - 2015-10-05T01:21:05.338Z
  * License: MIT
  */
 
@@ -160,7 +160,7 @@
 
         vm.isLoading = true;
         vm.isSuccessful = false;
-        vm.redered = false;
+        vm.isRendered = false;
         vm.percentLoaded = 0;
 
         // == Bind function to controller
@@ -173,7 +173,34 @@
         var props = null,
             $wrapper = null;
 
-        //TODO: Debug problem with $watchGroup and change $watch to $watchGroup
+        // == Directive defaults and properties
+        props = {
+            slides: [],
+            rightItems: [],
+            leftItems: [],
+            rightOutItem: null,
+            leftOutItem: null,
+            visible:  3,
+            perspective:  35,
+            animationSpeed:  500,
+            startSlide:  0,
+            dir: 'ltr',
+            total: 0,
+            slide: 0,
+            current: null,
+            width:  480,
+            height:  360,
+            border:  10,
+            space: 'auto',
+            topSpace: 'auto',
+            lock: false
+        };
+
+        angular.extend(props, vm.carousel3dOptions);
+
+        $element.css({
+            'height': props.height + props.border + 'px'
+        });
 
         $scope.$watch('[vm.ngModel, vm.carousel3dOptions]', function () {
             PreloaderService
@@ -182,6 +209,7 @@
                 function handleResolve(imageLocations) {
                     vm.isLoading = false;
                     vm.isSuccessful = true;
+
                     //console.info("Preload Successful");
                     $timeout(function () {
                         init();
@@ -227,13 +255,13 @@
                 lock: false
             };
 
+            angular.extend(props, vm.carousel3dOptions);
+
             var $slides = $wrapper.children();
 
             if (!$slides.length > 0) {
                 return false
             }
-
-            angular.extend(props, vm.carousel3dOptions);
 
             $wrapper.css({
                 'width': props.width + props.border + 'px',
@@ -552,7 +580,7 @@
                 props.leftOutItem.css(lCSS);
             }
 
-            vm.redered = true;
+            vm.isRendered = true;
         }
 
         function getSlide(index) {
@@ -576,7 +604,7 @@
             '       <div class="carousel-3d-loader-percentage">{{ vm.percentLoaded }}</div>' +
             '   </div>' +
             '   <div ng-switch-when="false" ng-switch="vm.isSuccessful">' +
-            '       <div class=\"carousel-3d\" ng-switch-when=\"true\" ng-show="vm.redered">' +
+            '       <div class=\"carousel-3d\" ng-switch-when=\"true\" ng-show="vm.isRendered">' +
             '           <img ng-repeat=\"image in vm.ngModel track by $index\" ng-src=\"{{image[vm.carousel3dSourceProp]}}\" class=\"slide-3d\" ng-click=\"vm.slideClicked($index)\" ng-swipe-left=\"vm.goPrev()\" ng-swipe-right=\"vm.goNext()\">' +
             '       </div>' +
             '       <p ng-switch-when=\"false\">There was a problem during load</p>' +
