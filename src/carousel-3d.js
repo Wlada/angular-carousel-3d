@@ -85,7 +85,7 @@
                     vm.percentLoaded = event.percent;
                 }
             );
-            
+
         }, true);
 
         function init() {

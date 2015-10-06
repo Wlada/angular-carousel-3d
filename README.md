@@ -43,10 +43,13 @@ angular.module('MyApp', ['angular-carousel-3d']);
   - `space`: space between slides
 
 ## Directive callbacks :
-'on-selected-click' : Callback that is invoked when the center slide was clicked.
-'on-slide-change' : Callback that is invoked when the slide is changed.
-'on-last-slide' : Callback that is invoked on last slide selected.
-'on-before-change' : Callback that is invoked before slide change.
+`on-selected-click` : Callback that is invoked when the center slide was clicked.
+
+`on-slide-change` : Callback that is invoked when the slide is changed.
+
+`on-last-slide` : Callback that is invoked on last slide selected.
+
+`on-before-change` : Callback that is invoked before slide change.
 
 
 ### To do:

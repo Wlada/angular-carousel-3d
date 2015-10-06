@@ -1,7 +1,7 @@
 /*!
  * angular-carousel-3d
  * 
- * Version: 0.0.5 - 2015-10-06T20:58:09.821Z
+ * Version: 0.0.5 - 2015-10-06T21:00:31.924Z
  * License: MIT
  */
 
@@ -93,7 +93,7 @@
                     vm.percentLoaded = event.percent;
                 }
             );
-            
+
         }, true);
 
         function init() {
