@@ -1,9 +1,8 @@
-# Angular Image Carousel 3D
-Angular Image 3D Carousel
+# Angular Carousel 3D
 
-This is BETA version. Plugin is under development. 
+Angular directive that allow you to build 3D image carousel.
 
-[DEMO](http://vladimirbujanovic.com/angular-carousel-3d/demo/demo.html)
+[Carousel DEMO PAGE](http://vladimirbujanovic.com/angular-carousel-3d/demo/demo.html)
 
 ## Usage :
 
@@ -25,27 +24,33 @@ angular.module('MyApp', ['angular-carousel-3d']);
 ```html
 <div carousel3d></div>
 ```
- - ng-model is required, so that the directive knows which model to update.
+ - Add ng-model with your array of objects which contain image source url
 ```html
-<div carousel3d ng-model="yourImageArray"></div>
+<div carousel3d ng-model="arrayOfObjects"></div>
 ```
+ - `Directive works with or without jQuery.`
 
 ## Directive options :
-`carousel3d-options` options object properties
- - `visible` number of visible slides
- - `perspective` slide distance between z=0
- - `animationSpeed` slide animation speed in ms
- - `startSlide` : index of start slide
- - `width`: width of slide
- - `height`: height of slide
- - `border`: width of slide border
- - `space`: space between slides
+`carousel3d-options` options object with properties:
+  - `sourceProp` image source property
+  - `visible` number of visible slides
+  - `perspective` slide distance between z=0
+  - `animationSpeed` slide animation speed in ms
+  - `startSlide` : index of start slide
+  - `width`: width of slide
+  - `height`: height of slide
+  - `border`: width of slide border
+  - `space`: space between slides
 
-`carousel3d-source-prop` image source url property
+## Directive callbacks :
+'on-selected-click' : Callback that is invoked when the center slide was clicked.
+'on-slide-change' : Callback that is invoked when the slide is changed.
+'on-last-slide' : Callback that is invoked on last slide selected.
+'on-before-change' : Callback that is invoked before slide change.
 
-## To do:
-- Write callbacks inside readme file
-- Verical Carousel option
+
+### To do:
+- Vertical Carousel option
 - Navigation option
 - Arrows option
 - Auto scroll option

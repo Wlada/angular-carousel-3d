@@ -1,8 +1,8 @@
 {
-  "name": "angular-directive-boilerplate",
-  "version": "0.0.8",
-  "description": "Angular Publishable Directive Boilerplate",
-  "repository": "git@github.com:mohsen1/angular-directive-boilerplate.git",
+  "name": "angular-carousel-3d",
+  "version": "0.0.5",
+  "description": "Angular Carousel 3d",
+  "repository": "https://github.com/Wlada/angular-carousel-3d",
   "main": "dist/directive.js",
   "scripts": {
     "test": "./node_modules/gulp/bin/gulp.js test"
@@ -12,7 +12,7 @@
     "angular",
     "directive"
   ],
-  "author": "Mohsen Azimi",
+  "author": "Vladimir Bujanovic",
   "license": "MIT",
   "devDependencies": {
     "del": "^0.1.3",

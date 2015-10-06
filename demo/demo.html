@@ -25,9 +25,13 @@
 <div class="container">
     <h1 class="text-muted">Angular carousel 3D</h1>
 
-    <carousel3d ng-model="app.images" carousel3d-options="app.options"
-                carousel3d-source-prop="src"
-                on-selected-click="app.selectedClick(index)" on-slide-change="app.slideChanged(index)"></carousel3d>
+    <carousel3d ng-model="app.images"
+                carousel3d-options="app.options"
+                on-selected-click="app.selectedClick(index)"
+                on-slide-change="app.slideChanged(index)"
+                on-last-slide="app.lastSlide(index)"
+                on-before-change="app.beforeChange(index)">
+    </carousel3d>
 
     <div class="row">
         <div class="col-xs-6">

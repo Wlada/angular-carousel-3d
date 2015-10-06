@@ -1,7 +1,7 @@
 /*!
- * angular-directive-boilerplate
+ * angular-carousel-3d
  * 
- * Version: 0.0.8 - 2015-10-05T01:17:22.398Z
+ * Version: 0.0.5 - 2015-10-06T20:57:32.243Z
  * License: MIT
  */
 
@@ -263,7 +263,8 @@
 .carousel-3d-loader {
   position: relative;
 }
-.carousel-3d-loader-percentage {
+.carousel-3d-loader-percentage,
+.carousel-3d-loader-error {
   font-size: 18px;
   position: absolute;
   top: 50%;
