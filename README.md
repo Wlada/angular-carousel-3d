@@ -41,6 +41,7 @@ angular.module('MyApp', ['angular-carousel-3d']);
   - `height`: height of slide
   - `border`: width of slide border
   - `space`: space between slides
+  - `inverseScaling`: Scale of background slides (Default: 250)
 
 ## Directive callbacks :
 `on-selected-click` : Callback that is invoked when the center slide was clicked.
