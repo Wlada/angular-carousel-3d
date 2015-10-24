@@ -11,7 +11,7 @@
 
     angular
         .module('angular-carousel-3d', [
-            'swipe'
+            'swipe' 
         ])
         .factory("PreloaderService", PreloaderService)
         .directive('carousel3d', carousel3d)
@@ -40,7 +40,8 @@
             height: 360,
             border: 10,
             space: 'auto',
-            topSpace: 'auto'
+            topSpace: 'auto',
+			inverseScaling: 250
         };
 
         // == Bind functions to controller
@@ -295,8 +296,8 @@
                              parseInt((i + 1) * (vm.options.space)),
 
                 transform = (positive) ?
-                            'translateX(' + (leftRemain) + 'px) translateZ(-' + (250 + ((i + 1) * 110)) + 'px) rotateY(-' + vm.options.perspective + 'deg)' :
-                            'translateX(-' + (leftRemain) + 'px) translateZ(-' + (250 + ((i + 1) * 110)) + 'px) rotateY(' + vm.options.perspective + 'deg)',
+                            'translateX(' + (leftRemain) + 'px) translateZ(-' + (vm.options.inverseScaling + ((i + 1) * 110)) + 'px) rotateY(-' + vm.options.perspective + 'deg)' :
+                            'translateX(-' + (leftRemain) + 'px) translateZ(-' + (vm.options.inverseScaling + ((i + 1) * 110)) + 'px) rotateY(' + vm.options.perspective + 'deg)',
                 left = "0%",
                 top = (vm.options.topSpace == "auto") ? "none" : parseInt((i + 1) * (vm.options.space)),
                 width = "none",
