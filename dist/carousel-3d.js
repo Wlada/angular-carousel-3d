@@ -1,7 +1,7 @@
 /*!
  * angular-carousel-3d
  * 
- * Version: 0.0.5 - 2015-12-01T15:20:21.135Z
+ * Version: 0.0.5 - 2015-12-01T15:30:47.394Z
  * License: MIT
  */
 
@@ -465,12 +465,12 @@
             this.lock = false;
             this.sourceProp = params.sourceProp || 'src';
             this.visible = params.visible || 5;
-            this.perspective = params.animationSpeed || 35;
+            this.perspective = params.perspective || 35;
             this.animationSpeed = params.animationSpeed || 500;
             this.dir = params.dir || 'ltr';
             this.width = params.width || 360;
             this.height = params.height || 270;
-            this.border = 5;
+            this.border = params.border || 5;
             this.space = params.space || 'auto';
             this.topSpace = params.topSpace || 'auto';
             this.inverseScaling = params.inverseScaling || 300;
