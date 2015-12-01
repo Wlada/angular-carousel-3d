@@ -11,7 +11,7 @@
     function AppController($scope, $log) {
         var vm = this;
 
-        vm.images = [
+        vm.slides = [
             {'src': 'images/photo2.jpg'},
             {'src': 'images/photo3.jpg'},
             {'src': 'images/photo4.jpg'},
@@ -20,6 +20,8 @@
             {'src': 'images/photo7.jpg'},
             {'src': 'images/photo8.jpg'}
         ];
+
+
         vm.options = {
             sourceProp: 'src',
             visible: 5,
@@ -28,7 +30,7 @@
             border: 3,
             width: 360,
             height: 270,
-            space: 200
+            space: 220
         };
 
         vm.removeImage = removeImage;

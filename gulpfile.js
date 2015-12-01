@@ -65,7 +65,7 @@ gulp.task('scripts', function() {
   };
 
   function buildDistJS(){
-    return gulp.src('src/carousel-3d.js')
+    return gulp.src('src/*.js')
       .pipe(plumber({
         errorHandler: handleError
       }))
