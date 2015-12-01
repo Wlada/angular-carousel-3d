@@ -1,7 +1,7 @@
 /*!
  * angular-carousel-3d
  * 
- * Version: 0.0.5 - 2015-12-01T15:30:47.394Z
+ * Version: 0.0.5 - 2015-12-01T15:32:02.448Z
  * License: MIT
  */
 

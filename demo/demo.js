@@ -59,13 +59,13 @@
 
 
         function addImage(src) {
-            vm.images.push({
+            vm.slides.push({
                 src: src
             });
         }
 
         function removeImage(index) {
-            vm.images.splice(vm.images.indexOf(vm.images[index]), 1);
+            vm.slides.splice(vm.slides.indexOf(vm.slides[index]), 1);
         }
     }
 
