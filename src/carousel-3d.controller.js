@@ -1,7 +1,7 @@
 /*!
  * angular-carousel-3d
  *
- * Version: 0.0.6
+ * Version: 0.0.7
  * License: MIT
  */
 
@@ -40,7 +40,6 @@
         function init(){
             Carousel3dService
                 .build(vm.model, vm.options)
-                .promise
                 .then(
                     function handleResolve(carousel) {
 
