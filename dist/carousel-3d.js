@@ -1,7 +1,7 @@
 /*!
  * angular-carousel-3d
  * 
- * Version: 0.0.6 - 2015-12-07T12:52:25.551Z
+ * Version: 0.0.7 - 2015-12-07T12:54:07.523Z
  * License: MIT
  */
 
@@ -9,7 +9,7 @@
 /*!
  * angular-carousel-3d
  * 
- * Version: 0.0.6
+ * Version: 0.0.7
  * License: MIT
  */
 
@@ -27,7 +27,7 @@
 /*!
  * angular-carousel-3d
  *
- * Version: 0.0.6
+ * Version: 0.0.7
  * License: MIT
  */
 
@@ -66,7 +66,6 @@
         function init(){
             Carousel3dService
                 .build(vm.model, vm.options)
-                .promise
                 .then(
                     function handleResolve(carousel) {
 
@@ -353,7 +352,7 @@
 /*!
  * angular-carousel-3d
  * 
- * Version: 0.0.6
+ * Version: 0.0.7
  * License: MIT
  */
 
@@ -427,7 +426,7 @@
 /*!
  * angular-carousel-3d
  *
- * Version: 0.0.6
+ * Version: 0.0.7
  * License: MIT
  */
 
@@ -473,6 +472,7 @@
             this.border = params.border || 5;
             this.space = params.space || 'auto';
             this.topSpace = params.topSpace || 'auto';
+            this.startSlide = params.startSlide || 0;
             this.inverseScaling = params.inverseScaling || 300;
             this.state = this.states.PENDING;
             this.deferred = $q.defer();
@@ -485,7 +485,22 @@
         Carousel3d.build = function (model, params) {
             var carousel = new Carousel3d(model, params || {});
 
-            return carousel.load();
+            return carousel.load().promise.then(function () {
+                carousel.visible = (carousel.visible > carousel.total) ? carousel.total : carousel.visible;
+
+                carousel.currentIndex = carousel.startSlide > carousel.total - 1 ? carousel.total - 1 : params.startSlide;
+
+                try {
+                    if (carousel.visible !== 2) {
+                        carousel.visible = (carousel.visible % 2) ? carousel.visible : carousel.visible - 1;
+                    }
+
+                } catch (error) {
+                    $log.error(error);
+                }
+
+                return carousel;
+            });
         };
 
         // == Private Service methods
@@ -503,9 +518,8 @@
             getTotalNumber: getTotalNumber,
             setStartSlide: setStartSlide,
             getSlides: getSlides,
-            setSlides : setSlides,
+            setSlides: setSlides,
             setCurrentIndex: setCurrentIndex,
-            setVisibleNumber: setVisibleNumber,
             getOuterWidth: getOuterWidth,
             getOuterHeight: getOuterHeight,
             setLock: setLock,
@@ -613,20 +627,6 @@
             return this.currentIndex = index;
         }
 
-        function setVisibleNumber(number) {
-            this.visible = (number > this.total) ? this.total : number;
-
-            try {
-                if (number === 2) {
-                    this.visible = number;
-                } else {
-                    this.visible = (number % 2) ? number : number - 1;
-                }
-            } catch (error) {
-                $log.error(error);
-            }
-        }
-
         function getOuterWidth() {
             return parseInt(this.width + this.border);
         }
@@ -643,11 +643,11 @@
             return this.lock;
         }
 
-        function getSlides(){
+        function getSlides() {
             return this.slides;
         }
 
-        function setSlides(){
+        function setSlides() {
             var num = Math.floor(this.visible / 2) + 1,
                 dir = 'ltr';
 
@@ -673,15 +673,15 @@
             return this.slides;
         }
 
-        function isLastSlide(){
+        function isLastSlide() {
             return this.currentIndex === this.total - 1;
         }
 
-        function isFirstSlide(){
+        function isFirstSlide() {
             return this.currentIndex === 0;
         }
 
-        function getSourceProp(){
+        function getSourceProp() {
             return this.sourceProp;
         }
 
