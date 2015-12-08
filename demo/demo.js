@@ -28,6 +28,7 @@
             perspective: 35,
             startSlide: 0,
             border: 3,
+            dir: 'ltr',
             width: 360,
             height: 270,
             space: 220
