@@ -11,7 +11,7 @@
     function AppController($scope, $log) {
         var vm = this;
 
-        vm.images = [
+        vm.slides = [
             {'src': 'images/photo2.jpg'},
             {'src': 'images/photo3.jpg'},
             {'src': 'images/photo4.jpg'},
@@ -20,15 +20,18 @@
             {'src': 'images/photo7.jpg'},
             {'src': 'images/photo8.jpg'}
         ];
+
+
         vm.options = {
             sourceProp: 'src',
             visible: 5,
             perspective: 35,
             startSlide: 0,
             border: 3,
+            dir: 'ltr',
             width: 360,
             height: 270,
-            space: 200
+            space: 220
         };
 
         vm.removeImage = removeImage;
@@ -57,13 +60,13 @@
 
 
         function addImage(src) {
-            vm.images.push({
+            vm.slides.push({
                 src: src
             });
         }
 
         function removeImage(index) {
-            vm.images.splice(vm.images.indexOf(vm.images[index]), 1);
+            vm.slides.splice(vm.slides.indexOf(vm.slides[index]), 1);
         }
     }
 
