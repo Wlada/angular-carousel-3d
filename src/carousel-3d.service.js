@@ -49,6 +49,7 @@
             this.topSpace = params.topSpace || 'auto';
             this.startSlide = params.startSlide || 0;
             this.inverseScaling = params.inverseScaling || 300;
+            this.html = params.html || false;
             this.state = this.states.PENDING;
             this.deferred = $q.defer();
             this.promise = this.deferred.promise;
@@ -76,6 +77,7 @@
 
                 return carousel;
             });
+
         };
 
         // == Private Service methods
@@ -122,6 +124,7 @@
                 return this;
             }
 
+
             this.state = this.states.LOADING;
 
             for (var i = 0; i < this.total; i++) {
@@ -166,6 +169,10 @@
 
             var carousel = this,
                 image = new Image();
+
+                if(carousel.html){
+                    carousel.handleImageLoad(carousel.html);
+                }
 
             image.onload = function (event) {
                 $rootScope.$apply(function () {

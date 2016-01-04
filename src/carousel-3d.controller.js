@@ -38,46 +38,46 @@
         $scope.$watch('[vm.model, vm.options]', init, true);
 
         function init(){
-            Carousel3dService
-                .build(vm.model, vm.options)
-                .then(
-                    function handleResolve(carousel) {
+                Carousel3dService
+                    .build(vm.model, vm.options)
+                    .then(
+                        function handleResolve(carousel) {
 
-                        carousel3d = carousel;
+                            carousel3d = carousel;
 
-                        vm.slides  = carousel3d.slides;
-                        vm.sourceProp  = carousel3d.sourceProp;
-                        vm.isLoading = false;
-                        vm.isSuccessful = true;
+                            vm.slides  = carousel3d.slides;
+                            vm.sourceProp  = carousel3d.sourceProp;
+                            vm.isLoading = false;
+                            vm.isSuccessful = true;
 
-                        var outerHeight = carousel3d.getOuterHeight(),
-                            outerWidth = carousel3d.getOuterWidth();
+                            var outerHeight = carousel3d.getOuterHeight(),
+                                outerWidth = carousel3d.getOuterWidth();
 
-                        $element.css({'height': outerHeight + 'px'});
+                            $element.css({'height': outerHeight + 'px'});
 
-                        $timeout(function () {
+                            $timeout(function () {
 
-                            $wrapper = angular.element($element[0].querySelector('.carousel-3d'));
-                            $wrapper.css({'width': outerWidth + 'px', 'height': outerHeight + 'px'});
-                            $slides = $wrapper.children();
+                                $wrapper = angular.element($element[0].querySelector('.carousel-3d'));
+                                $wrapper.css({'width': outerWidth + 'px', 'height': outerHeight + 'px'});
+                                $slides = $wrapper.children();
 
-                            render();
-                        });
+                                render();
+                            });
 
-                    },
-                    // == Preloaded images reject  handler
-                    function handleReject(carousel) {
+                        },
+                        // == Preloaded images reject  handler
+                        function handleReject(carousel) {
 
-                        $element.css({'height': carousel.getOuterHeight() + 'px'});
+                            $element.css({'height': carousel.getOuterHeight() + 'px'});
 
-                        vm.isLoading = false;
-                        vm.isSuccessful = false;
-                    },
-                    // == Preloaded images notify handler which is executed multiple times during preload
-                    function handleNotify(event) {
-                        vm.percentLoaded = event.percent;
-                    }
-                );
+                            vm.isLoading = false;
+                            vm.isSuccessful = false;
+                        },
+                        // == Preloaded images notify handler which is executed multiple times during preload
+                        function handleNotify(event) {
+                            vm.percentLoaded = event.percent;
+                        }
+                    );
 
         }
 
