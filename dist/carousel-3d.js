@@ -1,7 +1,7 @@
 /*!
  * angular-carousel-3d
  * 
- * Version: 0.0.7 - 2016-01-04T20:39:16.706Z
+ * Version: 0.0.7 - 2016-01-08T05:23:39.581Z
  * License: MIT
  */
 
@@ -42,9 +42,9 @@
     // ==
     // == Directive Controller
     // ========================================
-    Carousel3dController.$inject = ['$scope', '$element', '$attrs', '$timeout', '$log', '$parse', 'Carousel3dService'];
+    Carousel3dController.$inject = ['$scope', '$element', '$attrs', '$timeout', '$log', '$parse', 'Carousel3dService', '$window'];
 
-    function Carousel3dController($scope, $element, $attrs, $timeout, $log, $parse, Carousel3dService) {
+    function Carousel3dController($scope, $element, $attrs, $timeout, $log, $parse, Carousel3dService, $window) {
         var vm = this;
 
         vm.isLoading = true;
@@ -59,6 +59,20 @@
         var $wrapper = null,
             $slides = [],
             carousel3d = {};
+
+        // == Attach event listeners for arrow navigation
+         angular.element($window).off('keyup');
+         angular.element($window).on('keyup', function(event){
+            if(event.which === 39){
+                // right
+                vm.goNext();
+            }
+            if(event.which === 37){
+                // left
+                vm.goPrev();
+            }
+        })
+
 
         // == Watch changes on model and options object
         $scope.$watch('[vm.model, vm.options]', init, true);
@@ -499,26 +513,23 @@
         Carousel3d.build = function (model, params) {
             var carousel = new Carousel3d(model, params || {});
 
-            // if(true){
-            //     return carousel;
-            // }else{
-                return carousel.load().promise.then(function () {
-                    carousel.visible = (carousel.visible > carousel.total) ? carousel.total : carousel.visible;
+            return carousel.load().promise.then(function () {
+                carousel.visible = (carousel.visible > carousel.total) ? carousel.total : carousel.visible;
 
-                    carousel.currentIndex = carousel.startSlide > carousel.total - 1 ? carousel.total - 1 : params.startSlide;
+                carousel.currentIndex = carousel.startSlide > carousel.total - 1 ? carousel.total - 1 : params.startSlide;
 
-                    try {
-                        if (carousel.visible !== 2) {
-                            carousel.visible = (carousel.visible % 2) ? carousel.visible : carousel.visible - 1;
-                        }
-
-                    } catch (error) {
-                        $log.error(error);
+                try {
+                    if (carousel.visible !== 2) {
+                        carousel.visible = (carousel.visible % 2) ? carousel.visible : carousel.visible - 1;
                     }
 
-                    return carousel;
-                });
-            // }
+                } catch (error) {
+                    $log.error(error);
+                }
+
+                return carousel;
+            });
+
         };
 
         // == Private Service methods

@@ -16,9 +16,9 @@
     // ==
     // == Directive Controller
     // ========================================
-    Carousel3dController.$inject = ['$scope', '$element', '$attrs', '$timeout', '$log', '$parse', 'Carousel3dService'];
+    Carousel3dController.$inject = ['$scope', '$element', '$attrs', '$timeout', '$log', '$parse', 'Carousel3dService', '$window'];
 
-    function Carousel3dController($scope, $element, $attrs, $timeout, $log, $parse, Carousel3dService) {
+    function Carousel3dController($scope, $element, $attrs, $timeout, $log, $parse, Carousel3dService, $window) {
         var vm = this;
 
         vm.isLoading = true;
@@ -33,6 +33,20 @@
         var $wrapper = null,
             $slides = [],
             carousel3d = {};
+
+        // == Attach event listeners for arrow navigation
+         angular.element($window).off('keyup');
+         angular.element($window).on('keyup', function(event){
+            if(event.which === 39){
+                // right
+                vm.goNext();
+            }
+            if(event.which === 37){
+                // left
+                vm.goPrev();
+            }
+        })
+
 
         // == Watch changes on model and options object
         $scope.$watch('[vm.model, vm.options]', init, true);
