@@ -12,13 +12,11 @@
         var vm = this;
 
         vm.slides = [
-            {'src': 'images/photo2.jpg'},
-            {'src': 'images/photo3.jpg'},
-            {'src': 'images/photo4.jpg'},
-            {'src': 'images/photo5.jpg'},
-            {'src': 'images/photo6.jpg'},
-            {'src': 'images/photo7.jpg'},
-            {'src': 'images/photo8.jpg'}
+            {'src': 'images/photo3.jpg', 'html' : '<p>This is a P tag</p>'},
+            {'ssrc': 'images/photo3.jpg', 'html' : '<p>This is a P tag</p>'},
+            {'ssrc': 'images/photo3.jpg', 'html' : '<p>next slide will have an image</p>'},
+            {'srsc': 'images/photo3.jpg', 'html' : '<p>next slide will have an image</p>'},
+            {'src': 'images/photo8.jpg', 'html' : '<img src="images/photo8.jpg">'}
         ];
 
 
@@ -31,7 +29,8 @@
             dir: 'ltr',
             width: 360,
             height: 270,
-            space: 220
+            space: 220,
+            html : true
         };
 
         vm.removeImage = removeImage;

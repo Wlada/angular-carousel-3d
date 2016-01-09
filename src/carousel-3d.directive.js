@@ -11,11 +11,11 @@
 
     angular
         .module('angular-carousel-3d')
+        .directive('carousel3dSlideContent', carousel3dSlideContent) // == HTML rendering directive
         .directive('carousel3d', carousel3d);
 
     // ==
     // == Directive 3d
-    // ========================================
     carousel3d.$inject = ['$timeout'];
 
     function carousel3d($timeout) {
@@ -30,7 +30,8 @@
             '   </div>' +
             '   <div ng-switch-when="false" ng-switch="vm.isSuccessful">' +
             '       <div class=\"carousel-3d\" ng-switch-when=\"true\" ng-show="vm.isRendered">' +
-            '           <img ng-repeat=\"image in vm.slides track by $index\" ng-src=\"{{image[vm.sourceProp]}}\" class=\"slide-3d\" ng-click=\"vm.slideClicked($index)\" ng-swipe-left=\"vm.goPrev()\" ng-swipe-right=\"vm.goNext()\">' +
+            '           <div ng-repeat=\"slide in vm.slides track by $index\" class=\"slide-3d\" ng-click=\"vm.slideClicked($index)\" ng-swipe-left=\"vm.goPrev()\" ng-swipe-right=\"vm.goNext()\" carousel-3d-slide=\"{{slide[vm.options.sourceProp]}}\" style=\"width:{{vm.options.width}}px;height:{{vm.options.height}}px\" carousel-3d-slide-content=\"slide.html\" ng-if=\"vm.options.html\"></div>' +
+            '           <img ng-repeat=\"slide in vm.slides track by $index\" ng-src=\"{{slide[vm.options.sourceProp]}}\" class=\"slide-3d-img\" ng-click=\"vm.slideClicked($index)\" ng-swipe-left=\"vm.goPrev()\" ng-swipe-right=\"vm.goNext()\" ng-if=\"!vm.options.html\">' +
             '       </div>' +
             '       <p ng-switch-when=\"false\" class="carousel-3d-loader-error">There was a problem during load</p>' +
             '   </div>' +
@@ -71,4 +72,16 @@
         return carousel3d;
     }
 
+    // == HTML rendering directive
+    function carousel3dSlideContent($compile){
+        return {
+            link: function(scope, ele, attrs) {
+                scope.$watch(attrs.carousel3dSlideContent, function(html) {
+                    ele.html("");
+                    ele.html(html);
+                    $compile(ele.contents())(scope);
+                });
+            }
+        }
+    }
 })();
