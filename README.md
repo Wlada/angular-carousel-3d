@@ -20,7 +20,6 @@ Angular directive that allow you to build 3D carousel.
 angular.module('MyApp', ['angular-carousel-3d']);
 ```
 
-```
  - Add a `carousel-3d` attribute to any element.
  - Add `ng-model` with your array of objects
  - Add `carousel3d-slide` directive and `ng-repeat` to render slides
