@@ -1,7 +1,7 @@
 /*!
  * angular-carousel-3d
  * 
- * Version: 0.0.7 - 2016-01-14T01:35:09.156Z
+ * Version: 0.0.7 - 2016-01-14T01:49:58.970Z
  * License: MIT
  */
 
@@ -24,14 +24,6 @@
 
 
 })();
-/*!
- * angular-carousel-3d
- *
- * Version: 0.0.9
- * License: MIT
- */
-
-
 (function () {
     'use strict';
 
@@ -92,20 +84,6 @@
         var $wrapper = null,
             $slides = [],
             carousel3d = {};
-
-        // == Attach event listeners for arrow navigation
-        angular.element($window)
-            .off('keyup')
-            .on('keyup', function (event) {
-
-                if (event.which === 39) {
-                    vm.goNext();
-                }
-                if (event.which === 37) {
-                    vm.goPrev();
-                }
-            });
-
 
         // == Watch changes on model and options object
         $scope.$watch('[vm.model, vm.options]', init, true);

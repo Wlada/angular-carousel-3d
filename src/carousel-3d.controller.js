@@ -27,20 +27,6 @@
             $slides = [],
             carousel3d = {};
 
-        // == Attach event listeners for arrow navigation
-        angular.element($window)
-            .off('keyup')
-            .on('keyup', function (event) {
-
-                if (event.which === 39) {
-                    vm.goNext();
-                }
-                if (event.which === 37) {
-                    vm.goPrev();
-                }
-            });
-
-
         // == Watch changes on model and options object
         $scope.$watch('[vm.model, vm.options]', init, true);
 
