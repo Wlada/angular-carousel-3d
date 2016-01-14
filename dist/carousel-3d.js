@@ -1,18 +1,10 @@
 /*!
  * angular-carousel-3d
- * 
- * Version: 0.0.7 - 2016-01-14T01:49:58.970Z
+ * https://github.com/Wlada/angular-carousel-3d
+ * Version: 0.1.0 - 2016-01-14T02:06:54.286Z
  * License: MIT
  */
 
-
-/**
- * angular-3d-carousel
- * @authors Vladimir Bujanovic
- * @version v0.1.0
- * @link https://github.com/Wlada/angular-carousel-3d
- * @license MIT
- */
 
 (function () {
     'use strict';
