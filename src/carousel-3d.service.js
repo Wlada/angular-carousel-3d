@@ -1,11 +1,3 @@
-/*!
- * angular-carousel-3d
- *
- * Version: 0.0.7
- * License: MIT
- */
-
-
 (function () {
     'use strict';
 
@@ -37,7 +29,7 @@
             this.total = this.slides.length;
             this.currentIndex = 0;
             this.lock = false;
-            this.sourceProp = params.sourceProp || 'src';
+            this.sourceProp = params.sourceProp;
             this.visible = params.visible || 5;
             this.perspective = params.perspective || 35;
             this.animationSpeed = params.animationSpeed || 500;
@@ -47,9 +39,9 @@
             this.border = params.border || 5;
             this.space = params.space || 'auto';
             this.topSpace = params.topSpace || 'auto';
+            this.controls = params.controls || false;
             this.startSlide = params.startSlide || 0;
             this.inverseScaling = params.inverseScaling || 300;
-            this.html = params.html || false;
             this.state = this.states.PENDING;
             this.deferred = $q.defer();
             this.promise = this.deferred.promise;
@@ -127,9 +119,15 @@
 
             this.state = this.states.LOADING;
 
-            for (var i = 0; i < this.total; i++) {
-                this.loadImageLocation(this.slides[i]);
+            if (!this.sourceProp) {
+                this.deferred.resolve(this);
+
+            } else {
+                for (var i = 0; i < this.total; i++) {
+                    this.loadImageLocation(this.slides[i]);
+                }
             }
+
 
             return this;
         }
@@ -170,10 +168,6 @@
             var carousel = this,
                 image = new Image();
 
-                if(carousel.html){
-                    carousel.handleImageLoad(carousel.html);
-                }
-
             image.onload = function (event) {
                 $rootScope.$apply(function () {
                         carousel.handleImageLoad(event.target.src);
@@ -198,11 +192,6 @@
 
         function setStartSlide(index) {
             this.startSlide = (index < 0 || index > this.total) ? 0 : index;
-            //this.visible = (this.visible > this.total) ? this.total : this.visible;
-            //
-            //if (this.visible !== 2) {
-            //    this.visible = (this.visible % 2) ? this.visible : this.visible - 1;
-            //}
         }
 
         function setCurrentIndex(index) {

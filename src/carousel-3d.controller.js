@@ -1,10 +1,3 @@
-/*!
- * angular-carousel-3d
- *
- * Version: 0.0.7
- * License: MIT
- */
-
 
 (function () {
     'use strict';
@@ -16,9 +9,9 @@
     // ==
     // == Directive Controller
     // ========================================
-    Carousel3dController.$inject = ['$scope', '$element', '$attrs', '$timeout', '$log', '$parse', 'Carousel3dService', '$window'];
+    Carousel3dController.$inject = ['$scope', '$element', '$attrs', '$timeout', '$log', '$window', 'Carousel3dService'];
 
-    function Carousel3dController($scope, $element, $attrs, $timeout, $log, $parse, Carousel3dService, $window) {
+    function Carousel3dController($scope, $element, $attrs, $timeout, $log, $window, Carousel3dService) {
         var vm = this;
 
         vm.isLoading = true;
@@ -35,63 +28,65 @@
             carousel3d = {};
 
         // == Attach event listeners for arrow navigation
-         angular.element($window).off('keyup');
-         angular.element($window).on('keyup', function(event){
-            if(event.which === 39){
-                // right
-                vm.goNext();
-            }
-            if(event.which === 37){
-                // left
-                vm.goPrev();
-            }
-        })
+        angular.element($window)
+            .off('keyup')
+            .on('keyup', function (event) {
+
+                if (event.which === 39) {
+                    vm.goNext();
+                }
+                if (event.which === 37) {
+                    vm.goPrev();
+                }
+            });
 
 
         // == Watch changes on model and options object
         $scope.$watch('[vm.model, vm.options]', init, true);
 
-        function init(){
-                Carousel3dService
-                    .build(vm.model, vm.options)
-                    .then(
-                        function handleResolve(carousel) {
+        function init() {
+            Carousel3dService
+                .build(vm.model, vm.options)
+                .then(
+                    function handleResolve(carousel) {
 
-                            carousel3d = carousel;
+                        carousel3d = carousel;
 
-                            vm.slides  = carousel3d.slides;
-                            vm.sourceProp  = carousel3d.sourceProp;
-                            vm.isLoading = false;
-                            vm.isSuccessful = true;
+                        console.log(carousel);
 
-                            var outerHeight = carousel3d.getOuterHeight(),
-                                outerWidth = carousel3d.getOuterWidth();
+                        vm.slides = carousel3d.slides;
+                        vm.controls = carousel3d.controls;
+                        vm.isLoading = false;
+                        vm.isSuccessful = true;
 
-                            $element.css({'height': outerHeight + 'px'});
+                        var outerHeight = carousel3d.getOuterHeight(),
+                            outerWidth = carousel3d.getOuterWidth();
 
-                            $timeout(function () {
+                        $element.css({'height': outerHeight + 'px'});
 
-                                $wrapper = angular.element($element[0].querySelector('.carousel-3d'));
-                                $wrapper.css({'width': outerWidth + 'px', 'height': outerHeight + 'px'});
-                                $slides = $wrapper.children();
+                        $timeout(function () {
 
-                                render();
-                            });
+                            $wrapper = angular.element($element[0].querySelector('.carousel-3d'));
+                            $wrapper.css({'width': outerWidth + 'px', 'height': outerHeight + 'px'});
+                            $slides = $wrapper.children();
 
-                        },
-                        // == Preloaded images reject  handler
-                        function handleReject(carousel) {
+                            render();
+                        });
 
-                            $element.css({'height': carousel.getOuterHeight() + 'px'});
+                    },
+                    // == Preloaded images reject  handler
+                    function handleReject(carousel) {
 
-                            vm.isLoading = false;
-                            vm.isSuccessful = false;
-                        },
-                        // == Preloaded images notify handler which is executed multiple times during preload
-                        function handleNotify(event) {
-                            vm.percentLoaded = event.percent;
-                        }
-                    );
+                        $element.css({'height': carousel.getOuterHeight() + 'px'});
+
+                        vm.isLoading = false;
+                        vm.isSuccessful = false;
+                    },
+                    // == Preloaded images notify handler which is executed multiple times during preload
+                    function handleNotify(event) {
+                        vm.percentLoaded = event.percent;
+                    }
+                );
 
         }
 

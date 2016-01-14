@@ -33,14 +33,155 @@
   &.ng-hide-add {
     transition : opacity linear 500ms;
   }
+
+  .slide-3d {
+    border-radius   : 4px;
+    border-color    : #000;
+    border-color    : rgba(0, 0, 0, 0.4);
+    border-style    : solid;
+    background-size : cover
+  }
+
+  .slide-3d figure {
+    img {
+      width : 100%;
+    }
+    figcaption {
+      position    : absolute;
+      background  : rgba(0, 0, 0, 0.5);
+      color       : #fff;
+      width       : 100%;
+      left        : 0;
+      bottom      : 0;
+      font-weight : normal;
+      text-align  : center;
+      padding     : 7px 10px;
+    }
+  }
 }
 
-.carousel-3d .slide-3d {
-  border-radius   : 4px;
-  border-color    : #000;
-  border-color    : rgba(0, 0, 0, 0.4);
-  border-style    : solid;
-  background-size : cover
+// Controls
+/*====================================*/
+@size : 60px;
+@border : 2px;
+@arrowColor: #000000;
+
+.carousel-3d-controls {
+  position : absolute;
+  top      : 30%;
+  left     : 0;
+  width    : 100%;
+  z-index  : 9099;
+}
+
+.carousel-3d-next, .carousel-3d-prev {
+  width    : @size;
+  position : absolute !important;
+  z-index  : 9999;
+
+  &:hover {
+    cursor : pointer;
+  }
+}
+
+.carousel-3d-next {
+  left : 0;
+}
+
+.carousel-3d-prev {
+  right : 0;
+}
+
+.arrow-top,
+.arrow-right,
+.arrow-bottom,
+.arrow-left {
+  display  : block;
+  margin   : 20px auto;
+  overflow : hidden;
+  position : relative;
+}
+
+.arrow-top,
+.arrow-bottom {
+  height : (@size / 2) + (@border * 2);
+  width  : @size + (@border * 2);
+}
+
+.arrow-right,
+.arrow-left {
+  height : @size + (@border * 2);
+  width  : (@size / 2) + (@border * 2);
+}
+
+.arrow-top:before,
+.arrow-right:before,
+.arrow-bottom:before,
+.arrow-left:before {
+  border   : (@size / 2) solid transparent;
+  content  : ' ';
+  display  : block;
+  position : absolute;
+  z-index  : 2;
+}
+
+.arrow-top:before {
+  border-bottom-color : @arrowColor;
+  left                : @border;
+  bottom              : 0;
+}
+
+.arrow-right:before {
+  border-left-color : @arrowColor;
+  left              : 0;
+  top               : @border;
+}
+
+.arrow-bottom:before {
+  border-top-color : @arrowColor;
+  left             : @border;
+  top              : 0;
+}
+
+.arrow-left:before {
+  border-right-color : @arrowColor;
+  right              : 0;
+  top                : @border;
+}
+
+.arrow-top-bg:after,
+.arrow-right-bg:after,
+.arrow-bottom-bg:after,
+.arrow-left-bg:after {
+  border   : (@size / 2 + @border) solid transparent;
+  content  : ' ';
+  display  : block;
+  position : absolute;
+  z-index  : 1;
+}
+
+.arrow-top-bg:after {
+  border-bottom-color : @arrowColor;
+  bottom              : 0;
+  left                : 0;
+}
+
+.arrow-right-bg:after {
+  border-left-color : @arrowColor;
+  left              : 0;
+  top               : 0;
+}
+
+.arrow-bottom-bg:after {
+  border-top-color : @arrowColor;
+  left             : 0;
+  top              : 0;
+}
+
+.arrow-left-bg:after {
+  border-right-color : @arrowColor;
+  right              : 0;
+  top                : 0;
 }
 
 // Loading

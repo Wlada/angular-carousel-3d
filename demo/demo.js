@@ -11,14 +11,15 @@
     function AppController($scope, $log) {
         var vm = this;
 
+        // SLIDES WITH CAPTIONS
+        //===================================
         vm.slides = [
-            {'src': 'images/photo3.jpg', 'html' : '<p>This is a P tag</p>'},
-            {'ssrc': 'images/photo3.jpg', 'html' : '<p>This is a P tag</p>'},
-            {'ssrc': 'images/photo3.jpg', 'html' : '<p>next slide will have an image</p>'},
-            {'srsc': 'images/photo3.jpg', 'html' : '<p>next slide will have an image</p>'},
-            {'src': 'images/photo8.jpg', 'html' : '<img src="images/photo8.jpg">'}
+            {'src': 'images/photo2.jpg', caption: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, maxime.'},
+            {'src': 'images/photo3.jpg', caption: 'Lorem ipsum dolor sit amet '},
+            {'src': 'images/photo4.jpg', caption: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. '},
+            {'src': 'images/photo5.jpg', caption: 'Lorem ipsum dolor sit amet,  Enim, maxime.'},
+            {'src': 'images/photo6.jpg', caption: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, maxime.'}
         ];
-
 
         vm.options = {
             sourceProp: 'src',
@@ -29,12 +30,33 @@
             dir: 'ltr',
             width: 360,
             height: 270,
-            space: 220,
-            html : true
+            space: 220
         };
 
-        vm.removeImage = removeImage;
-        vm.addImage = addImage;
+        // ANY HTML
+        //===================================
+        vm.slides2 = [
+            {'bg': '#2a6496', caption: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, maxime.'},
+            {'bg': '#000000', caption: 'Lorem ipsum dolor sit amet '},
+            {'bg': '#ffcc41', caption: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. '},
+            {'bg': '#445fac', caption: 'Lorem ipsum dolor sit amet,  Enim, maxime.'},
+            {'bg': '#442BF3', caption: 'Lorem ipsum dolor sit amet,  Maxime.'}
+        ];
+
+        vm.options2 = {
+            visible: 3,
+            perspective: 35,
+            startSlide: 0,
+            border: 0,
+            dir: 'ltr',
+            width: 360,
+            height: 270,
+            space: 220,
+            controls: true
+        };
+
+        vm.removeSlide = removeSlide;
+        vm.addSlide = addSlide;
         vm.selectedClick = selectedClick;
         vm.slideChanged = slideChanged;
         vm.beforeChange = beforeChange;
@@ -58,14 +80,12 @@
         }
 
 
-        function addImage(src) {
-            vm.slides.push({
-                src: src
-            });
+        function addSlide(slide, array) {
+            array.push(slide);
         }
 
-        function removeImage(index) {
-            vm.slides.splice(vm.slides.indexOf(vm.slides[index]), 1);
+        function removeSlide(index, array) {
+            array.splice(array.indexOf(array[index]), 1);
         }
     }
 

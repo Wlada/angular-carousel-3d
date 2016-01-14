@@ -25,12 +25,24 @@
 <div class="container">
     <h1 class="text-muted">Angular carousel 3D</h1>
 
-    <carousel3d ng-model="app.slides"
-                options="app.options"
-                on-selected-click="app.selectedClick(index)"
-                on-slide-change="app.slideChanged(index)"
-                on-last-slide="app.lastSlide(index)"
-                on-before-change="app.beforeChange(index)">
+
+    <h2>Slides with image and caption</h2>
+
+    <carousel3d
+            ng-model="app.slides"
+            options="app.options"
+            on-selected-click="app.selectedClick(index)"
+            on-slide-change="app.slideChanged(index)"
+            on-last-slide="app.lastSlide(index)"
+            on-before-change="app.beforeChange(index)">
+
+        <carousel3d-slide ng-repeat="slide in app.slides">
+            <figure>
+                <img ng-src="{{slide.src}}" alt=""/>
+                <figcaption ng-bind="slide.caption"></figcaption>
+            </figure>
+        </carousel3d-slide>
+
     </carousel3d>
 
     <div class="row">
@@ -86,24 +98,140 @@
         </div>
         <div class="col-xs-6">
 
-            <h3>Directive ngModel slides</h3>
+            <h3>&nbsp;</h3>
 
 
             <div class="form-group">
-                <label for="slideSrc">Image source:</label>
 
-                <input type="text" ng-model="app.slideSrc" id="slideSrc" placeholder="Image source" class="form-control">
+                <p><input type="text" ng-model="app.slide.src" id="slideSrc" placeholder="Slide image" class="form-control"></p>
+
+                <p><input type="text" ng-model="app.slide.caption" id="slideCaption" placeholder="Slide Caption" class="form-control"></p>
+
             </div>
 
             <div class="form-group">
-                <button ng-click="app.addImage(app.slideSrc)" class="btn btn-md btn-success" ng-disabled="!app.slideSrc">Add slide</button>
+                <button ng-click="app.addSlide(app.slide, app.slides)" class="btn btn-md btn-success"
+                        ng-disabled="!app.slide.src || !app.slide.caption">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    Add slide
+                </button>
             </div>
 
             <ol class="list">
-                <li ng-repeat="image in app.slides track by $index" class="clearfix">
+                <li ng-repeat="slide in app.slides track by $index" class="clearfix">
+
                     <span>Slide {{$index}}</span>
-                    <button type="button" class="btn btn-sm btn-danger pull-right"
-                            ng-click="app.removeImage($index)">Remove</button>
+
+                    <button type="button" class="btn btn-md btn-danger pull-right"
+                            ng-click="app.removeSlide($index, app.slides)">
+                        <span class="glyphicon glyphicon-remove-circle"></span>
+                    </button>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <h2>Slides with any html</h2>
+
+    <carousel3d
+            ng-model="app.slides2"
+            options="app.options2"
+            on-selected-click="app.selectedClick(index)"
+            on-slide-change="app.slideChanged(index)"
+            on-last-slide="app.lastSlide(index)"
+            on-before-change="app.beforeChange(index)">
+
+        <carousel3d-slide ng-repeat="slide in app.slides2 track by $index" ng-style="{'background': slide.bg}">
+            <div style="padding: 20px; color: #fff">
+                <h2>Slide</h2>
+                <p ng-bind="slide.caption"></p>
+                <p ng-bind="slide.caption"></p>
+            </div>
+        </carousel3d-slide>
+
+    </carousel3d>
+
+    <div class="row">
+        <div class="col-xs-6">
+
+            <h3>Directive properties</h3>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="numVisible">Visible:</label>
+                        <input type="number" ng-model="app.options.visible" id="numVisible" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="numWidth">Width:</label>
+                        <input type="number" ng-model="app.options.width" id="numWidth" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numHeight">Height:</label>
+                        <input type="number" ng-model="app.options.height" id="numHeight" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numStartSlide">Start slide:</label>
+                        <input type="number" ng-model="app.options.startSlide" id="numStartSlide" class="form-control">
+                    </div>
+                </div>
+                <div class="col-xs-6">
+
+                    <div class="form-group">
+                        <label for="numBorder">Border size:</label>
+                        <input type="number" ng-model="app.options.border" id="numBorder" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numSpace">Space between slides:</label>
+                        <input type="number" ng-model="app.options.space" id="numSpace" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numPerspective">Slide perspective:</label>
+                        <input type="number" ng-model="app.options.perspective" id="numPerspective" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dir">Carousel direction:</label>
+                        <input type="text" ng-model="app.options.dir" id="dir" class="form-control">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+
+            <h3>&nbsp;</h3>
+
+            <div class="form-group">
+                <p><textarea ng-model="app.slide2.html" placeholder="Slide HTML" class="form-control"></textarea></p>
+
+                <p><input type="text" ng-model="app.slide2.caption" placeholder="Slide Caption" class="form-control"></p>
+
+                <p><input type="text" ng-model="app.slide2.bg" placeholder="Slide Background (HEXADECIMAL)" class="form-control"></p>
+
+            </div>
+
+            <div class="form-group">
+                <button ng-click="app.addSlide(app.slide2, app.slides2)" class="btn btn-md btn-success"
+                        ng-disabled="!app.slide2.html || !app.slide2.caption || !app.slide2.bg">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    Add slide
+                </button>
+            </div>
+
+            <ol class="list">
+                <li ng-repeat="slide in app.slides2 track by $index" class="clearfix">
+
+                    <span>Slide {{$index}}</span>
+
+                    <button type="button" class="btn btn-md btn-danger pull-right"
+                            ng-click="app.removeSlide($index, app.slides2)">
+                        <span class="glyphicon glyphicon-remove-circle"></span>
+                    </button>
                 </li>
             </ol>
         </div>
@@ -115,10 +243,13 @@
     _gaq.push(['_setAccount', 'UA-4467381-14']);
     _gaq.push(['_trackPageview']);
 
-    (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
     })();
 </script>
 

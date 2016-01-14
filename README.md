@@ -1,6 +1,6 @@
 # Angular Carousel 3D
 
-Angular directive that allow you to build 3D image carousel.
+Angular directive that allow you to build 3D carousel.
 
 [Carousel DEMO PAGE](http://vladimirbujanovic.com/angular-carousel-3d/demo/demo.html)
 
@@ -20,13 +20,19 @@ Angular directive that allow you to build 3D image carousel.
 angular.module('MyApp', ['angular-carousel-3d']);
 ```
 
- - Add a `carousel-3d` attribute to any element.
-```html
-<div carousel3d></div>
 ```
- - Add ng-model with your array of objects which contain image source url
+ - Add a `carousel-3d` attribute to any element.
+ - Add `ng-model` with your array of objects
+ - Add `carousel3d-slide` directive and `ng-repeat` to render slides
 ```html
-<div carousel3d ng-model="arrayOfObjectsWithImageSrc"></div>
+<div carousel3d ng-model="arrayOfObjects">
+    <div carousel3d-slide ng-repeat="slide in app.slides track by $index">
+        <figure>
+            <img ng-src="{{slide.src}}" alt=""/>
+            <figcaption ng-bind="slide.caption"></figcaption>
+        </figure>
+    </div>
+</div>
 ```
  - `Directive works with or without jQuery.`
 
@@ -41,7 +47,7 @@ angular.module('MyApp', ['angular-carousel-3d']);
   - `border`: width of slide border (Default: 5)
   - `space`: space between slides (Default: 'auto')
   - `inverseScaling`: Scale of background slides (Default: 250)
-  - `html`: Enables html content by using a html property on each slide, this ignores de sourceProp (Default: false)
+  - `controls`: toggle arrow controls on carousel (Default: false)
 
 ## Directive callbacks :
 `on-selected-click` : Callback that is invoked when the center slide was clicked.
@@ -55,7 +61,5 @@ angular.module('MyApp', ['angular-carousel-3d']);
 
 ### To do:
 - Vertical Carousel option
-- Navigation option
-- Arrows option
 - Auto scroll option
 - Add tests
