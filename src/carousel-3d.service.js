@@ -36,7 +36,7 @@
             this.dir = params.dir || 'ltr';
             this.width = params.width || 360;
             this.height = params.height || 270;
-            this.border = params.border || 5;
+            this.border = params.border || 0;
             this.space = params.space || 'auto';
             this.topSpace = params.topSpace || 'auto';
             this.controls = params.controls || false;

@@ -38,8 +38,6 @@
 
                         carousel3d = carousel;
 
-                        console.log(carousel);
-
                         vm.slides = carousel3d.slides;
                         vm.controls = carousel3d.controls;
                         vm.isLoading = false;
@@ -199,7 +197,7 @@
 
         function goSlide(index, motionless, farchange) {
 
-            if (vm.onBeforeChange) {
+            if (angular.isFunction(vm.onBeforeChange)) {
                 vm.onBeforeChange({
                     index: carousel3d.currentIndex
                 });
@@ -216,7 +214,7 @@
                 }
             }
 
-            angular.forEach(carousel3d.leftSlides, function (slide, index) {
+            angular.forEach($slides, function (slide, index) {
                 angular.element($slides[index]).removeClass('current');
             });
 

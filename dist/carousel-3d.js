@@ -1,7 +1,7 @@
 /*!
  * Name: angular-carousel-3d
  * GIT Page: https://github.com/Wlada/angular-carousel-3d
- * Version: 0.1.0 - 2016-01-14T02:14:39.055Z
+ * Version: 0.1.0 - 2016-01-17T19:35:10.888Z
  * License: MIT
  */
 
@@ -87,8 +87,6 @@
                     function handleResolve(carousel) {
 
                         carousel3d = carousel;
-
-                        console.log(carousel);
 
                         vm.slides = carousel3d.slides;
                         vm.controls = carousel3d.controls;
@@ -249,7 +247,7 @@
 
         function goSlide(index, motionless, farchange) {
 
-            if (vm.onBeforeChange) {
+            if (angular.isFunction(vm.onBeforeChange)) {
                 vm.onBeforeChange({
                     index: carousel3d.currentIndex
                 });
@@ -266,7 +264,7 @@
                 }
             }
 
-            angular.forEach(carousel3d.leftSlides, function (slide, index) {
+            angular.forEach($slides, function (slide, index) {
                 angular.element($slides[index]).removeClass('current');
             });
 
@@ -475,7 +473,7 @@
             this.dir = params.dir || 'ltr';
             this.width = params.width || 360;
             this.height = params.height || 270;
-            this.border = params.border || 5;
+            this.border = params.border || 0;
             this.space = params.space || 'auto';
             this.topSpace = params.topSpace || 'auto';
             this.controls = params.controls || false;
