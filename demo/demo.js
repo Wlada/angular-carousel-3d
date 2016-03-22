@@ -30,7 +30,8 @@
             dir: 'ltr',
             width: 360,
             height: 270,
-            space: 220
+            space: 220,
+            autoRotationSpeed: 2500
         };
 
 
