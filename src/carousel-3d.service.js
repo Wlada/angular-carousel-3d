@@ -42,6 +42,7 @@
             this.controls = params.controls || false;
             this.startSlide = params.startSlide || 0;
             this.inverseScaling = params.inverseScaling || 300;
+            this.autoRotationSpeed = params.autoRotationSpeed || 0;
             this.state = this.states.PENDING;
             this.deferred = $q.defer();
             this.promise = this.deferred.promise;

@@ -9,15 +9,16 @@
     // ==
     // == Directive Controller
     // ========================================
-    Carousel3dController.$inject = ['$scope', '$element', '$attrs', '$timeout', '$log', '$window', 'Carousel3dService'];
+    Carousel3dController.$inject = ['$scope', '$element', '$attrs', '$timeout', '$interval', '$log', '$window', 'Carousel3dService'];
 
-    function Carousel3dController($scope, $element, $attrs, $timeout, $log, $window, Carousel3dService) {
+    function Carousel3dController($scope, $element, $attrs, $timeout, $interval, $log, $window, Carousel3dService) {
         var vm = this;
 
         vm.isLoading = true;
         vm.isSuccessful = false;
         vm.isRendered = false;
         vm.percentLoaded = 0;
+        vm.autoRotation = null;
 
         vm.slideClicked = slideClicked;
         vm.goPrev = goPrev;
@@ -165,6 +166,15 @@
                 getSlide(carousel3d.leftOutSlide).css(lCSS);
             }
 
+            if(carousel3d.autoRotationSpeed > 0) {
+                vm.autoRotation = $interval(function() {
+                    if(vm.dir === 'rtl') {
+                        vm.goPrev();
+                    } else {
+                        vm.goNext();
+                    }
+                }, carousel3d.autoRotationSpeed);
+            }
             vm.isRendered = true;
         }
 
@@ -301,6 +311,7 @@
         }
 
         function slideClicked(index) {
+            $interval.cancel(vm.autoRotation);
 
             if (carousel3d.currentIndex != index) {
                 goFar(index);

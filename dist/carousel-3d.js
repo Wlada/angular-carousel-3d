@@ -1,7 +1,7 @@
 /*!
  * Name: angular-carousel-3d
  * GIT Page: https://github.com/Wlada/angular-carousel-3d
- * Version: 0.1.0 - 2016-01-17T19:35:10.888Z
+ * Version: 0.1.1 - 2016-03-22T20:41:29.039Z
  * License: MIT
  */
 
@@ -59,15 +59,16 @@
     // ==
     // == Directive Controller
     // ========================================
-    Carousel3dController.$inject = ['$scope', '$element', '$attrs', '$timeout', '$log', '$window', 'Carousel3dService'];
+    Carousel3dController.$inject = ['$scope', '$element', '$attrs', '$timeout', '$interval', '$log', '$window', 'Carousel3dService'];
 
-    function Carousel3dController($scope, $element, $attrs, $timeout, $log, $window, Carousel3dService) {
+    function Carousel3dController($scope, $element, $attrs, $timeout, $interval, $log, $window, Carousel3dService) {
         var vm = this;
 
         vm.isLoading = true;
         vm.isSuccessful = false;
         vm.isRendered = false;
         vm.percentLoaded = 0;
+        vm.autoRotation = null;
 
         vm.slideClicked = slideClicked;
         vm.goPrev = goPrev;
@@ -215,6 +216,15 @@
                 getSlide(carousel3d.leftOutSlide).css(lCSS);
             }
 
+            if(carousel3d.autoRotationSpeed > 0) {
+                vm.autoRotation = $interval(function() {
+                    if(vm.dir === 'rtl') {
+                        vm.goPrev();
+                    } else {
+                        vm.goNext();
+                    }
+                }, carousel3d.autoRotationSpeed);
+            }
             vm.isRendered = true;
         }
 
@@ -351,6 +361,7 @@
         }
 
         function slideClicked(index) {
+            $interval.cancel(vm.autoRotation);
 
             if (carousel3d.currentIndex != index) {
                 goFar(index);
@@ -479,6 +490,7 @@
             this.controls = params.controls || false;
             this.startSlide = params.startSlide || 0;
             this.inverseScaling = params.inverseScaling || 300;
+            this.autoRotationSpeed = params.autoRotationSpeed || 0;
             this.state = this.states.PENDING;
             this.deferred = $q.defer();
             this.promise = this.deferred.promise;
