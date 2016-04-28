@@ -182,8 +182,8 @@
 
             var leftRemain = (carousel3d.space == "auto") ? parseInt((i + 1) * (carousel3d.width / 1.5)) : parseInt((i + 1) * (carousel3d.space)),
                 transform = (positive) ?
-                            'translateX(' + (leftRemain) + 'px) translateZ(-' + (carousel3d.inverseScaling + ((i + 1) * 100)) + 'px) rotateY(-' + carousel3d.perspective + 'deg)' :
-                            'translateX(-' + (leftRemain) + 'px) translateZ(-' + (carousel3d.inverseScaling + ((i + 1) * 100)) + 'px) rotateY(' + carousel3d.perspective + 'deg)',
+                            'translateX(' + (leftRemain) + 'px) translateZ(' + (-(carousel3d.inverseScaling + ((i + 1) * 100))) + 'px) rotateY(' + (-carousel3d.perspective) + 'deg)' :
+                            'translateX(' + (-leftRemain) + 'px) translateZ(' + (-(carousel3d.inverseScaling + ((i + 1) * 100))) + 'px) rotateY(' + carousel3d.perspective + 'deg)',
                 left = "0%",
                 top = (carousel3d.topSpace === "auto") ? "none" : parseInt((i + 1) * (carousel3d.space)),
                 width = "none",
