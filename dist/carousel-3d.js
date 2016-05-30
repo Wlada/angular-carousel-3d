@@ -1,7 +1,7 @@
 /*!
  * Name: angular-carousel-3d
  * GIT Page: https://github.com/Wlada/angular-carousel-3d
- * Version: 0.1.1 - 2016-03-22T20:41:29.039Z
+ * Version: 0.1.1 - 2016-05-30T20:01:50.496Z
  * License: MIT
  */
 
@@ -48,7 +48,6 @@
         return carousel3dSlide;
     }
 })();
-
 (function () {
     'use strict';
 
@@ -293,7 +292,7 @@
 
             farchange = (farchange) ? farchange : false;
 
-            if (!farchange && carousel3d.getLock()) {
+            if ((!farchange && carousel3d.getLock()) || (!carousel3d.loop && carousel3d.isLastSlide())) {
                 return false;
             }
 
@@ -311,7 +310,7 @@
 
             farchange = (farchange) ? farchange : false;
 
-            if (!farchange && carousel3d.getLock()) {
+            if ((!farchange && carousel3d.getLock()) || (!carousel3d.loop && carousel3d.isFirstSlide())) {
                 return false;
             }
 
@@ -364,7 +363,12 @@
             $interval.cancel(vm.autoRotation);
 
             if (carousel3d.currentIndex != index) {
-                goFar(index);
+
+                if (!carousel3d.clicking) {
+                    return false;
+                } else {
+                    goFar(index);
+                }
 
             } else {
                 if (vm.onSelectedClick) {
@@ -453,9 +457,6 @@
         .module('angular-carousel-3d')
         .factory("Carousel3dService", Carousel3dService);
 
-    // ==
-    // == Directive Service
-    // ========================================
     Carousel3dService.$inject = ['$rootScope', '$q', '$log'];
 
     function Carousel3dService($rootScope, $q, $log) {
@@ -468,6 +469,8 @@
             this.rightOutSlide = '';
             this.loadCount = 0;
             this.errorCount = 0;
+            this.loop = params.loop || false;
+            this.clicking = params.clicking || false;
             this.states = {
                 PENDING: 1,
                 LOADING: 2,
@@ -496,7 +499,7 @@
             this.promise = this.deferred.promise;
         }
 
-        // == Public Service methods
+        // == Public  methods
         // ========================================
 
         Carousel3d.build = function (model, params) {
@@ -521,7 +524,7 @@
 
         };
 
-        // == Private Service methods
+        // == Private  methods
         // ========================================
 
         var proto = {

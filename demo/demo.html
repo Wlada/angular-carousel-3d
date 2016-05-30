@@ -144,7 +144,7 @@
         <carousel3d-slide ng-repeat="slide in app.slides2 track by $index" ng-style="{'background': slide.bg}">
             <div style="padding: 20px; color: #fff">
                 <h2>Slide</h2>
-                <p ng-bind="slide.caption"></p>
+                <p ng-bind-html="slide.html"></p>
                 <p ng-bind="slide.caption"></p>
             </div>
         </carousel3d-slide>

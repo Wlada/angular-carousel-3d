@@ -45,6 +45,8 @@ angular.module('MyApp', ['angular-carousel-3d']);
   - `height`: height of slide (Default: 270)
   - `border`: width of slide border (Default: 0)
   - `space`: space between slides (Default: 'auto')
+  - `clicking`: enable navigation with slide clicking (Default: false)
+  - `loop`: slide looping (Default: false)
   - `inverseScaling`: Scale of background slides (Default: 250)
   - `controls`: toggle arrow controls on carousel (Default: false)
 

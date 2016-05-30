@@ -1,4 +1,3 @@
-
 (function () {
     'use strict';
 
@@ -243,7 +242,7 @@
 
             farchange = (farchange) ? farchange : false;
 
-            if (!farchange && carousel3d.getLock()) {
+            if ((!farchange && carousel3d.getLock()) || (!carousel3d.loop && carousel3d.isLastSlide())) {
                 return false;
             }
 
@@ -261,7 +260,7 @@
 
             farchange = (farchange) ? farchange : false;
 
-            if (!farchange && carousel3d.getLock()) {
+            if ((!farchange && carousel3d.getLock()) || (!carousel3d.loop && carousel3d.isFirstSlide())) {
                 return false;
             }
 
@@ -314,7 +313,12 @@
             $interval.cancel(vm.autoRotation);
 
             if (carousel3d.currentIndex != index) {
-                goFar(index);
+
+                if (!carousel3d.clicking) {
+                    return false;
+                } else {
+                    goFar(index);
+                }
 
             } else {
                 if (vm.onSelectedClick) {
