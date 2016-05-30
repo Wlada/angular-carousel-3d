@@ -30,7 +30,8 @@
             dir: 'ltr',
             width: 360,
             height: 270,
-            space: 220
+            space: 220,
+            loop: true
         };
 
 
@@ -53,6 +54,7 @@
             width: 360,
             height: 270,
             space: 220,
+            loop: false,
             controls: true
         };
 
@@ -83,6 +85,7 @@
 
         function addSlide(slide, array) {
             array.push(slide);
+            vm.slide2 = {};
         }
 
         function removeSlide(index, array) {

@@ -5,9 +5,6 @@
         .module('angular-carousel-3d')
         .factory("Carousel3dService", Carousel3dService);
 
-    // ==
-    // == Directive Service
-    // ========================================
     Carousel3dService.$inject = ['$rootScope', '$q', '$log'];
 
     function Carousel3dService($rootScope, $q, $log) {
@@ -20,6 +17,8 @@
             this.rightOutSlide = '';
             this.loadCount = 0;
             this.errorCount = 0;
+            this.loop = params.loop || false;
+            this.clicking = params.clicking || false;
             this.states = {
                 PENDING: 1,
                 LOADING: 2,
@@ -47,7 +46,7 @@
             this.promise = this.deferred.promise;
         }
 
-        // == Public Service methods
+        // == Public  methods
         // ========================================
 
         Carousel3d.build = function (model, params) {
@@ -72,7 +71,7 @@
 
         };
 
-        // == Private Service methods
+        // == Private  methods
         // ========================================
 
         var proto = {
