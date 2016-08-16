@@ -15,7 +15,7 @@
         var carousel3d = {
             restrict: 'AE',
             template: '' +
-            '<div class=\"carousel-3d-container\" ng-switch="vm.isLoading">' +
+            '<div class=\"carousel-3d-container\" ng-switch="vm.isLoading" ng-mouseenter="vm.autoRotationLocked=true" ng-mouseleave="vm.autoRotationLocked=false">' +
             '   <div class="carousel-3d-loader" ng-switch-when=\"true\">' +
             '       <div class=\"carousel-3d-loader-circle\" style=\"-webkit-transform:scale(0.75)\"><div><div></div><div></div></div></div>' +
             '       <div class="carousel-3d-loader-percentage">{{ vm.percentLoaded }}</div>' +
