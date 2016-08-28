@@ -31,11 +31,8 @@
             width: 360,
             height: 270,
             space: 220,
-<<<<<<< HEAD
-            autoRotationSpeed: 2500
-=======
+            autoRotationSpeed: 2500,
             loop: true
->>>>>>> 1.0.0
         };
 
 

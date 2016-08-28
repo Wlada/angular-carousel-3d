@@ -167,10 +167,12 @@
 
             if(carousel3d.autoRotationSpeed > 0) {
                 vm.autoRotation = $interval(function() {
-                    if(vm.dir === 'rtl') {
-                        vm.goPrev();
-                    } else {
-                        vm.goNext();
+                    if (!vm.autoRotationLocked){
+                        if(vm.dir === 'rtl') {
+                            vm.goPrev();
+                        } else {
+                            vm.goNext();
+                        }
                     }
                 }, carousel3d.autoRotationSpeed);
             }
