@@ -9,13 +9,15 @@ module.exports = function(config) {
 
     // List of files / patterns to load in the browser
     files: [
-      'bower_components/jquery/dist/jquery.js',
       'bower_components/angular/angular.js',
-      'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/angular-sanitize/angular-sanitize.js',
+      'bower_components/angular-swipe/dist/angular-swipe.js',
 
-      'dist/directive.js',
-      'dist/directive.css',
+      'dist/carousel-3d.js',
+      'dist/carousel-3d.min.js',
+      'dist/carousel-3d.css',
+      'dist/carousel-3d.min.css',
       'test/**/*.spec.js'
     ],
 

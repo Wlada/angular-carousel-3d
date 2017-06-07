@@ -1,7 +1,7 @@
 var fs = require('fs');
 var connect = require('gulp-connect');
 var gulp = require('gulp');
-var karma = require('karma').server;
+var KarmaServer = require('karma').Server;
 var concat = require('gulp-concat');
 var jshint = require('gulp-jshint');
 var header = require('gulp-header');
@@ -9,7 +9,7 @@ var rename = require('gulp-rename');
 var es = require('event-stream');
 var del = require('del');
 var uglify = require('gulp-uglify');
-var minifyHtml = require('gulp-minify-html');
+var minifyHtml = require('gulp-htmlmin');
 var minifyCSS = require('gulp-minify-css');
 var templateCache = require('gulp-angular-templatecache');
 var gutil = require('gulp-util');
@@ -88,7 +88,11 @@ gulp.task('scripts', function() {
     }))
     .pipe(gulp.dest('dist'))
     .pipe(rename({suffix: '.min'}))
-    .pipe(uglify({preserveComments: 'some'}))
+    .pipe(uglify({
+      output: {
+        comments: 'some'
+      }
+    }))
     .pipe(gulp.dest('./dist'))
     .pipe(connect.reload());
 });
@@ -118,16 +122,22 @@ gulp.task('jshint-test', function(){
 });
 
 gulp.task('karma', function (done) {
-  karma.start({
+  var server = new KarmaServer({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  });
+  server.on('run_complete', function (_browsers, res) {
+    done(res.exitCode ? 'There are failing unit tests' : null);
+  });
+  server.start();
+});
+
+gulp.task('karma-serve', function(done) {
+  var server = new KarmaServer({
     configFile: __dirname + '/karma.conf.js',
     singleRun: true
   }, done);
-});
-
-gulp.task('karma-serve', function(done){
-  karma.start({
-    configFile: __dirname + '/karma.conf.js'
-  }, done);
+  server.start();
 });
 
 function handleError(err) {
