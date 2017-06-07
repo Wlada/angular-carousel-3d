@@ -1,43 +1,60 @@
 'use strict';
 
 describe('carousel3d', function () {
-  var scope, $compile, $rootScope, element;
+  var $compile, $document, $rootScope;
+
+  // Helpers
 
   function createDirective(template) {
-    var elm;
-
-    elm = angular.element(template);
-    angular.element(document.body).prepend(elm);
-    $compile(elm)(scope);
+    var element = angular.element(template);
+    $document.prepend(element);
+    var scope = $rootScope.$new();
+    $compile(element)(scope);
     scope.$digest();
-
-    return elm;
+    return element;
   }
 
-  beforeEach(module('ngSanitize', 'carousel3d'));
+  // Tests
 
-  beforeEach(inject(function(_$rootScope_, _$compile_) {
-    $rootScope = _$rootScope_;
-    scope = $rootScope.$new();
-    $compile = _$compile_;
-  }));
+  beforeEach(function () {
+    // Load the dependencies
+    module('swipe');
+    module('angular-carousel-3d');
 
-  afterEach(function () {
-    if (element) element.remove();
+    // Inject the services
+    inject(function (_$rootScope_, _$compile_, _$document_) {
+      $rootScope = _$rootScope_;
+      $compile = _$compile_;
+      $document = _$document_;
+    });
   });
 
-  describe('as an element', function(){ runTestsWithTemplate('<carousel3d></carousel3d>'); });
-  describe('as an attribute', function(){ runTestsWithTemplate('<div carousel3d></div>'); });
-
+  /**
+   * Allow the tests to be run
+   * using the directive
+   * as an attribute or an element
+   */
   function runTestsWithTemplate(template) {
-    describe('when created', function () {
+    var element;
 
-      it('should initial the value to 0', function () {
-        element = createDirective(template);
+    beforeEach(function () {
+      element = createDirective(template);
+    });
 
-        expect(element.text()).toContain('0');
-      });
+    afterEach(function () {
+      element.remove();
+    });
+
+    it('should display nothing with an empty template', function () {
+      expect(element.text().trim()).toEqual('');
     });
   }
 
+  describe('as an element', function () {
+    runTestsWithTemplate('<carousel3d></carousel3d>');
+  });
+
+  describe('as an attribute', function () {
+    runTestsWithTemplate('<div carousel3d></div>');
+  });
 });
