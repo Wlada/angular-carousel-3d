@@ -22,6 +22,7 @@
         ];
 
         vm.options = {
+            clicking: true,
             sourceProp: 'src',
             visible: 5,
             perspective: 35,
