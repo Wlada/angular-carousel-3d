@@ -132,7 +132,7 @@
             return this;
         }
 
-        function handleImageError(imageLocation) {
+        function handleImageError() {
             this.errorCount++;
 
             if (this.isRejected()) {

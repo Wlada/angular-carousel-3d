@@ -3,7 +3,6 @@ var connect = require('gulp-connect');
 var gulp = require('gulp');
 var KarmaServer = require('karma').Server;
 var concat = require('gulp-concat');
-var jshint = require('gulp-jshint');
 var header = require('gulp-header');
 var rename = require('gulp-rename');
 var es = require('event-stream');
@@ -12,12 +11,11 @@ var uglify = require('gulp-uglify');
 var minifyHtml = require('gulp-htmlmin');
 var minifyCSS = require('gulp-minify-css');
 var templateCache = require('gulp-angular-templatecache');
-var gutil = require('gulp-util');
 var plumber = require('gulp-plumber');
 var open = require('gulp-open');
 var less = require('gulp-less');
 var order = require("gulp-order");
-
+var eslint = require('gulp-eslint');
 
 var config = {
   pkg : JSON.parse(fs.readFileSync('./package.json')),
@@ -53,7 +51,6 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('scripts', function() {
-
   function buildTemplates() {
     return gulp.src('src/**/*.html')
       .pipe(minifyHtml({
@@ -62,17 +59,14 @@ gulp.task('scripts', function() {
              quotes: true
             }))
       .pipe(templateCache({module: 'carousel3d'}));
-  };
+  }
 
   function buildDistJS(){
     return gulp.src('src/*.js')
       .pipe(plumber({
         errorHandler: handleError
-      }))
-      //.pipe(jshint())
-      //.pipe(jshint.reporter('jshint-stylish'))
-      //.pipe(jshint.reporter('fail'));
-  };
+      }));
+  }
 
   es.merge(buildDistJS(), buildTemplates())
     .pipe(plumber({
@@ -97,9 +91,7 @@ gulp.task('scripts', function() {
     .pipe(connect.reload());
 });
 
-
 gulp.task('styles', function() {
-
   return gulp.src('src/carousel-3d.less')
     .pipe(less())
     .pipe(header(config.banner, {
@@ -117,8 +109,10 @@ gulp.task('open', function(){
   .pipe(open('', {url: 'http://localhost:8080/demo/demo.html'}));
 });
 
-gulp.task('jshint-test', function(){
-  return gulp.src('./test/**/*.js').pipe(jshint());
+gulp.task('eslint', function () {
+  return gulp.src('src/**/*.js')
+    .pipe(eslint({ 'useEslintrc': true }))
+    .pipe(eslint.format());
 });
 
 gulp.task('karma', function (done) {
@@ -145,9 +139,8 @@ function handleError(err) {
   this.emit('end');
 }
 
-gulp.task('build', ['clean', 'scripts', 'styles']);
+gulp.task('build', ['clean', 'eslint', 'scripts', 'styles']);
 gulp.task('serve', ['build', 'connect', 'watch', 'open']);
-//gulp.task('serve', ['build', 'watch', 'open']);
 gulp.task('default', ['build', 'test']);
-gulp.task('test', ['build', 'jshint-test', 'karma']);
-gulp.task('serve-test', ['build', 'watch', 'jshint-test', 'karma-serve']);
+gulp.task('test', ['build', 'karma']);
+gulp.task('serve-test', ['build', 'watch', 'karma-serve']);

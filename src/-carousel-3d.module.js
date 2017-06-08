@@ -3,7 +3,7 @@
 
     angular
         .module('angular-carousel-3d', [
-            'swipe' 
+            'swipe'
         ]);
 
 

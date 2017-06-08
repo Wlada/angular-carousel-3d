@@ -79,7 +79,7 @@
 
             var outerHeight = carousel3d.getOuterHeight(),
                 outerWidth = carousel3d.getOuterWidth(),
-                slideTop = (carousel3d.topSpace === "auto") ? 0 : ((outerHeight / 2) - (outerHeight / 2)),
+                slideTop = (carousel3d.topSpace === 'auto') ? 0 : ((outerHeight / 2) - (outerHeight / 2)),
                 slideLeft = ((carousel3d.width / 2) - (outerWidth / 2)),
                 speed = (speedTime) ? (speedTime / 1000) : (carousel3d.animationSpeed / 1000),
                 zIndex = 999;
@@ -99,11 +99,11 @@
 
                 if (animate) {
                     angular.extend(css, {
-                        '-webkit-transition': "all " + speed + "s ",
-                        '-moz-transition': "all " + speed + "s ",
-                        '-o-transition': "all " + speed + "s ",
-                        '-ms-transition': "all " + speed + "s ",
-                        'transition': "all " + speed + "s "
+                        '-webkit-transition': 'all ' + speed + 's ',
+                        '-moz-transition': 'all ' + speed + 's ',
+                        '-o-transition': 'all ' + speed + 's ',
+                        '-ms-transition': 'all ' + speed + 's ',
+                        'transition': 'all ' + speed + 's '
                     });
                 }
 
@@ -124,8 +124,8 @@
                     'transform': 'none',
                     left: slideLeft + 'px',
                     top: slideTop + 'px',
-                    width: outerWidth + "px",
-                    height: outerHeight + "px"
+                    width: outerWidth + 'px',
+                    height: outerHeight + 'px'
                 });
 
             angular.forEach(carousel3d.rightSlides, function (slide, index) {
@@ -181,15 +181,15 @@
 
         function setCss(i, zIndex, positive) {
 
-            var leftRemain = (carousel3d.space == "auto") ? parseInt((i + 1) * (carousel3d.width / 1.5)) : parseInt((i + 1) * (carousel3d.space)),
+            var leftRemain = (carousel3d.space == 'auto') ? parseInt((i + 1) * (carousel3d.width / 1.5)) : parseInt((i + 1) * (carousel3d.space)),
                 transform = (positive) ?
                             'translateX(' + (leftRemain) + 'px) translateZ(-' + (carousel3d.inverseScaling + ((i + 1) * 100)) + 'px) rotateY(-' + carousel3d.perspective + 'deg)' :
                             'translateX(-' + (leftRemain) + 'px) translateZ(-' + (carousel3d.inverseScaling + ((i + 1) * 100)) + 'px) rotateY(' + carousel3d.perspective + 'deg)',
-                left = "0%",
-                top = (carousel3d.topSpace === "auto") ? "none" : parseInt((i + 1) * (carousel3d.space)),
-                width = "none",
-                height = "none",
-                overflow = "visible";
+                left = '0%',
+                top = (carousel3d.topSpace === 'auto') ? 'none' : parseInt((i + 1) * (carousel3d.space)),
+                width = 'none',
+                height = 'none',
+                overflow = 'visible';
 
             return {
                 '-webkit-transform': transform,
