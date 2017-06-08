@@ -93,8 +93,8 @@
                     overflow: 'hidden',
                     top: slideTop + 'px',
                     'border-width': carousel3d.border + 'px',
-                    width: outerWidth,
-                    height: outerHeight
+                    width: outerWidth + 'px',
+                    height: outerHeight + 'px'
                 };
 
                 if (animate) {
