@@ -18,13 +18,10 @@
     "test",
     "tests"
   ],
-  "devDependencies": {
-    "angular": "~1.4.6",
-    "angular-sanitize": "~1.2.28",
-    "angular-mocks": "~1.4.6",
-    "angular-swipe": "~0.0.9"
-  },
   "dependencies": {
-    "angular-swipe": "~0.1.0"
+    "angular": "1.6.x",
+    "angular-mocks": "1.6.x",
+    "angular-sanitize": "1.6.x",
+    "angular-swipe": "0.2.x"
   }
 }
