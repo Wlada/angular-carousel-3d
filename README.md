@@ -1,7 +1,7 @@
 # Angular Carousel 3D
 
-## This repository is no longer maintained. 
-## Feel free to create pull requests if you have some improvement, but I won't do any testing
+### This repository is no longer maintained. 
+### Feel free to create pull requests if you have some improvement, but I won't do any testing
 
 
 Angular directive that allow you to build 3D carousel.
