@@ -1,7 +1,7 @@
 /*!
  * Name: angular-carousel-3d
  * GIT Page: https://github.com/Wlada/angular-carousel-3d
- * Version: 0.1.1 - 2016-05-30T20:01:50.496Z
+ * Version: 0.2.0 - 2017-06-23T13:58:44.022Z
  * License: MIT
  */
 
@@ -11,11 +11,12 @@
 
     angular
         .module('angular-carousel-3d', [
-            'swipe' 
+            'swipe'
         ]);
 
 
 })();
+
 (function () {
     'use strict';
 
@@ -32,7 +33,7 @@
         var carousel3dSlide = {
             require: '^carousel3d',
             restrict: 'AE',
-            template: '<div class=\"slide-3d\" ng-click=\"carousel3d.slideClicked($index)\" ng-swipe-left=\"carousel3d.goPrev()\" ng-swipe-right=\"carousel3d.goNext()\" ng-transclude></div>',
+            template: '<div class="slide-3d" ng-click="carousel3d.slideClicked($index)" ng-swipe-left="carousel3d.goPrev()" ng-swipe-right="carousel3d.goNext()" ng-transclude></div>',
             replace: true,
             transclude: true,
             link: linkFunc
@@ -41,13 +42,14 @@
         // ==
         // == Directive link
         // ========================================
-        function linkFunc(scope, element, attrs, ctrl, transclude) {
+        function linkFunc(scope, element, attrs, ctrl) {
             scope.carousel3d = ctrl;
         }
 
         return carousel3dSlide;
     }
 })();
+
 (function () {
     'use strict';
 
@@ -129,7 +131,7 @@
 
             var outerHeight = carousel3d.getOuterHeight(),
                 outerWidth = carousel3d.getOuterWidth(),
-                slideTop = (carousel3d.topSpace === "auto") ? 0 : ((outerHeight / 2) - (outerHeight / 2)),
+                slideTop = (carousel3d.topSpace === 'auto') ? 0 : ((outerHeight / 2) - (outerHeight / 2)),
                 slideLeft = ((carousel3d.width / 2) - (outerWidth / 2)),
                 speed = (speedTime) ? (speedTime / 1000) : (carousel3d.animationSpeed / 1000),
                 zIndex = 999;
@@ -143,17 +145,17 @@
                     overflow: 'hidden',
                     top: slideTop + 'px',
                     'border-width': carousel3d.border + 'px',
-                    width: outerWidth,
-                    height: outerHeight
+                    width: outerWidth + 'px',
+                    height: outerHeight + 'px'
                 };
 
                 if (animate) {
                     angular.extend(css, {
-                        '-webkit-transition': "all " + speed + "s ",
-                        '-moz-transition': "all " + speed + "s ",
-                        '-o-transition': "all " + speed + "s ",
-                        '-ms-transition': "all " + speed + "s ",
-                        'transition': "all " + speed + "s "
+                        '-webkit-transition': 'all ' + speed + 's ',
+                        '-moz-transition': 'all ' + speed + 's ',
+                        '-o-transition': 'all ' + speed + 's ',
+                        '-ms-transition': 'all ' + speed + 's ',
+                        'transition': 'all ' + speed + 's '
                     });
                 }
 
@@ -174,8 +176,8 @@
                     'transform': 'none',
                     left: slideLeft + 'px',
                     top: slideTop + 'px',
-                    width: outerWidth + "px",
-                    height: outerHeight + "px"
+                    width: outerWidth + 'px',
+                    height: outerHeight + 'px'
                 });
 
             angular.forEach(carousel3d.rightSlides, function (slide, index) {
@@ -217,10 +219,12 @@
 
             if(carousel3d.autoRotationSpeed > 0) {
                 vm.autoRotation = $interval(function() {
-                    if(vm.dir === 'rtl') {
-                        vm.goPrev();
-                    } else {
-                        vm.goNext();
+                    if (!vm.autoRotationLocked){
+                        if(vm.dir === 'rtl') {
+                            vm.goPrev();
+                        } else {
+                            vm.goNext();
+                        }
                     }
                 }, carousel3d.autoRotationSpeed);
             }
@@ -229,15 +233,15 @@
 
         function setCss(i, zIndex, positive) {
 
-            var leftRemain = (carousel3d.space == "auto") ? parseInt((i + 1) * (carousel3d.width / 1.5)) : parseInt((i + 1) * (carousel3d.space)),
+            var leftRemain = (carousel3d.space == 'auto') ? parseInt((i + 1) * (carousel3d.width / 1.5)) : parseInt((i + 1) * (carousel3d.space)),
                 transform = (positive) ?
                             'translateX(' + (leftRemain) + 'px) translateZ(-' + (carousel3d.inverseScaling + ((i + 1) * 100)) + 'px) rotateY(-' + carousel3d.perspective + 'deg)' :
                             'translateX(-' + (leftRemain) + 'px) translateZ(-' + (carousel3d.inverseScaling + ((i + 1) * 100)) + 'px) rotateY(' + carousel3d.perspective + 'deg)',
-                left = "0%",
-                top = (carousel3d.topSpace === "auto") ? "none" : parseInt((i + 1) * (carousel3d.space)),
-                width = "none",
-                height = "none",
-                overflow = "visible";
+                left = '0%',
+                top = (carousel3d.topSpace === 'auto') ? 'none' : parseInt((i + 1) * (carousel3d.space)),
+                width = 'none',
+                height = 'none',
+                overflow = 'visible';
 
             return {
                 '-webkit-transform': transform,
@@ -381,6 +385,7 @@
     }
 
 })();
+
 (function () {
     'use strict';
 
@@ -393,23 +398,23 @@
     // == Directive 3d
     carousel3d.$inject = ['$timeout'];
 
-    function carousel3d($timeout) {
+    function carousel3d() {
 
         var carousel3d = {
             restrict: 'AE',
             template: '' +
-            '<div class=\"carousel-3d-container\" ng-switch="vm.isLoading">' +
-            '   <div class="carousel-3d-loader" ng-switch-when=\"true\">' +
-            '       <div class=\"carousel-3d-loader-circle\" style=\"-webkit-transform:scale(0.75)\"><div><div></div><div></div></div></div>' +
+            '<div class="carousel-3d-container" ng-switch="vm.isLoading" ng-mouseenter="vm.autoRotationLocked=true" ng-mouseleave="vm.autoRotationLocked=false">' +
+            '   <div class="carousel-3d-loader" ng-switch-when="true">' +
+            '       <div class="carousel-3d-loader-circle" style="-webkit-transform:scale(0.75)"><div><div></div><div></div></div></div>' +
             '       <div class="carousel-3d-loader-percentage">{{ vm.percentLoaded }}</div>' +
             '   </div>' +
             '   <div ng-switch-when="false" ng-switch="vm.isSuccessful">' +
-            '       <div class=\"carousel-3d\" ng-switch-when=\"true\" ng-show="vm.isRendered" ng-transclude>' +
+            '       <div class="carousel-3d" ng-switch-when="true" ng-show="vm.isRendered" ng-transclude>' +
             '       </div>' +
-            '       <p ng-switch-when=\"false\" class="carousel-3d-loader-error">There was a problem during load</p>' +
+            '       <p ng-switch-when="false" class="carousel-3d-loader-error">There was a problem during load</p>' +
             '       <div ng-if="vm.controls" class="carousel-3d-controls">' +
-            '           <div class="carousel-3d-next arrow-left" ng-click=\"vm.goPrev()\"></div>' +
-            '           <div class="carousel-3d-prev arrow-right" ng-click=\"vm.goNext()\"></div>' +
+            '           <div class="carousel-3d-next arrow-left" ng-click="vm.goPrev()"></div>' +
+            '           <div class="carousel-3d-prev arrow-right" ng-click="vm.goNext()"></div>' +
             '       </div>' +
             '   </div>' +
             '</div>',
@@ -424,32 +429,14 @@
             },
             controller: 'Carousel3dController as vm',
             bindToController: true,
-            transclude: true,
-            compile: compileFunc,
-            link: linkFunc
+            transclude: true
         };
-
-        // ==
-        // == Directive Compile
-        // =======================================
-        //compileFunc.$inject = ['element', 'attributes', '$attrs'];
-
-        function compileFunc(element, attributes) {
-
-            return (linkFunc);
-        }
-
-        // ==
-        // == Directive link
-        // ========================================
-
-        function linkFunc(scope, element, attrs, ctrl, transclude) {
-        }
 
         return carousel3d;
     }
 
 })();
+
 (function () {
     'use strict';
 
@@ -469,8 +456,6 @@
             this.rightOutSlide = '';
             this.loadCount = 0;
             this.errorCount = 0;
-            this.loop = params.loop || false;
-            this.clicking = params.clicking || false;
             this.states = {
                 PENDING: 1,
                 LOADING: 2,
@@ -480,7 +465,10 @@
             this.total = this.slides.length;
             this.currentIndex = 0;
             this.lock = false;
-            this.sourceProp = params.sourceProp;
+
+            this.loop = params.loop || false;
+            this.clicking = params.clicking || false;
+            this.sourceProp = params.sourceProp || '';
             this.visible = params.visible || 5;
             this.perspective = params.perspective || 35;
             this.animationSpeed = params.animationSpeed || 500;
@@ -494,6 +482,7 @@
             this.startSlide = params.startSlide || 0;
             this.inverseScaling = params.inverseScaling || 300;
             this.autoRotationSpeed = params.autoRotationSpeed || 0;
+
             this.state = this.states.PENDING;
             this.deferred = $q.defer();
             this.promise = this.deferred.promise;
@@ -584,7 +573,7 @@
             return this;
         }
 
-        function handleImageError(imageLocation) {
+        function handleImageError() {
             this.errorCount++;
 
             if (this.isRejected()) {
