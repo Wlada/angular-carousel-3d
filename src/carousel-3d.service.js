@@ -17,8 +17,6 @@
             this.rightOutSlide = '';
             this.loadCount = 0;
             this.errorCount = 0;
-            this.loop = params.loop || false;
-            this.clicking = params.clicking || false;
             this.states = {
                 PENDING: 1,
                 LOADING: 2,
@@ -28,7 +26,10 @@
             this.total = this.slides.length;
             this.currentIndex = 0;
             this.lock = false;
-            this.sourceProp = params.sourceProp;
+
+            this.loop = params.loop || false;
+            this.clicking = params.clicking || false;
+            this.sourceProp = params.sourceProp || '';
             this.visible = params.visible || 5;
             this.perspective = params.perspective || 35;
             this.animationSpeed = params.animationSpeed || 500;
@@ -42,6 +43,7 @@
             this.startSlide = params.startSlide || 0;
             this.inverseScaling = params.inverseScaling || 300;
             this.autoRotationSpeed = params.autoRotationSpeed || 0;
+
             this.state = this.states.PENDING;
             this.deferred = $q.defer();
             this.promise = this.deferred.promise;
