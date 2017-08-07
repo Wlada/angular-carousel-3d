@@ -25,8 +25,8 @@
             '       </div>' +
             '       <p ng-switch-when="false" class="carousel-3d-loader-error">There was a problem during load</p>' +
             '       <div ng-if="vm.controls" class="carousel-3d-controls">' +
-            '           <div class="carousel-3d-next arrow-left" ng-click="vm.goPrev()"></div>' +
-            '           <div class="carousel-3d-prev arrow-right" ng-click="vm.goNext()"></div>' +
+            '           <div class="carousel-3d-next arrow-left" ng-click="vm.goNext()"></div>' +
+            '           <div class="carousel-3d-prev arrow-right" ng-click="vm.goPrev()"></div>' +
             '       </div>' +
             '   </div>' +
             '</div>',
@@ -39,7 +39,8 @@
                 onLastSlide: '&',
                 onBeforeChange: '&'
             },
-            controller: 'Carousel3dController as vm',
+            controller: 'Carousel3dController',
+            controllerAs: 'vm',
             bindToController: true,
             transclude: true
         };
