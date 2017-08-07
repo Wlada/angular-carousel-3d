@@ -165,10 +165,10 @@
                 getSlide(carousel3d.leftOutSlide).css(lCSS);
             }
 
-            if(carousel3d.autoRotationSpeed > 0) {
+            if (carousel3d.autoRotationSpeed > 0) {
                 vm.autoRotation = $interval(function() {
                     if (!vm.autoRotationLocked){
-                        if(vm.options.dir === 'ltr') {
+                        if (vm.options.dir === 'ltr') {
                             vm.goNext();
                         } else {
                             vm.goPrev();
