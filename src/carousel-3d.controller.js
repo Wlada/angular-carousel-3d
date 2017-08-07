@@ -168,10 +168,10 @@
             if(carousel3d.autoRotationSpeed > 0) {
                 vm.autoRotation = $interval(function() {
                     if (!vm.autoRotationLocked){
-                        if(vm.dir === 'rtl') {
-                            vm.goPrev();
-                        } else {
+                        if(vm.options.dir === 'ltr') {
                             vm.goNext();
+                        } else {
+                            vm.goPrev();
                         }
                     }
                 }, carousel3d.autoRotationSpeed);
@@ -241,8 +241,7 @@
         }
 
         function goNext(farchange) {
-
-            farchange = (farchange) ? farchange : false;
+            farchange = Boolean(farchange);
 
             if ((!farchange && carousel3d.getLock()) || (!carousel3d.loop && carousel3d.isLastSlide())) {
                 return false;
@@ -259,8 +258,7 @@
         }
 
         function goPrev(farchange) {
-
-            farchange = (farchange) ? farchange : false;
+            farchange = Boolean(farchange);
 
             if ((!farchange && carousel3d.getLock()) || (!carousel3d.loop && carousel3d.isFirstSlide())) {
                 return false;
