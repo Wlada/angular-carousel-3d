@@ -207,11 +207,16 @@
         }
 
         function goSlide(index, motionless, farchange) {
+            var keepChanging = false;
 
             if (angular.isFunction(vm.onBeforeChange)) {
-                vm.onBeforeChange({
-                    index: carousel3d.currentIndex
-                });
+              keepChanging = vm.onBeforeChange({
+                index: carousel3d.currentIndex
+              });
+
+              if (keepChanging === false) {
+                return;
+              }
             }
 
             carousel3d.setCurrentIndex((index < 0 || index > carousel3d.total - 1) ? 0 : index);
