@@ -66,14 +66,19 @@
         vm.slideChanged = slideChanged;
         vm.beforeChange = beforeChange;
         vm.lastSlide = lastSlide;
-
+        vm.preventBeforeChange = false;
 
         function lastSlide(index) {
             $log.log('Last Slide Selected callback triggered. \n == Slide index is: ' + index + ' ==');
         }
 
         function beforeChange(index) {
-            $log.log('Before Slide Change callback triggered. \n == Slide index is: ' + index + ' ==');
+          $log.log('Before Slide Change callback triggered. \n == Slide index is: ' + index + ' ==');
+
+          if (vm.preventBeforeChange) {
+            $log.log('Slide change prevented by beforeChange callback. \n');
+            return false;
+          }
         }
 
         function selectedClick(index) {

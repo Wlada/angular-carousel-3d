@@ -70,7 +70,7 @@ angular.module('MyApp', ['angular-carousel-3d']);
 - `on-selected-click` : Callback that is invoked when the center slide was clicked.
 - `on-slide-change` : Callback that is invoked when the slide is changed.
 - `on-last-slide` : Callback that is invoked on last slide selected.
-- `on-before-change` : Callback that is invoked before slide change.
+- `on-before-change` : Callback that is invoked before slide change. Prevent the carousel from sliding by returning the boolean value `false` inside the callback.
 
 ## ToDo:
 - Vertical Carousel option

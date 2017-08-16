@@ -165,13 +165,13 @@
                 getSlide(carousel3d.leftOutSlide).css(lCSS);
             }
 
-            if(carousel3d.autoRotationSpeed > 0) {
+            if (carousel3d.autoRotationSpeed > 0) {
                 vm.autoRotation = $interval(function() {
                     if (!vm.autoRotationLocked){
-                        if(vm.dir === 'rtl') {
-                            vm.goPrev();
-                        } else {
+                        if (vm.options.dir === 'ltr') {
                             vm.goNext();
+                        } else {
+                            vm.goPrev();
                         }
                     }
                 }, carousel3d.autoRotationSpeed);
@@ -207,11 +207,16 @@
         }
 
         function goSlide(index, motionless, farchange) {
+            var keepChanging = false;
 
             if (angular.isFunction(vm.onBeforeChange)) {
-                vm.onBeforeChange({
-                    index: carousel3d.currentIndex
-                });
+              keepChanging = vm.onBeforeChange({
+                index: carousel3d.currentIndex
+              });
+
+              if (keepChanging === false) {
+                return;
+              }
             }
 
             carousel3d.setCurrentIndex((index < 0 || index > carousel3d.total - 1) ? 0 : index);
@@ -241,8 +246,7 @@
         }
 
         function goNext(farchange) {
-
-            farchange = (farchange) ? farchange : false;
+            farchange = Boolean(farchange);
 
             if ((!farchange && carousel3d.getLock()) || (!carousel3d.loop && carousel3d.isLastSlide())) {
                 return false;
@@ -259,8 +263,7 @@
         }
 
         function goPrev(farchange) {
-
-            farchange = (farchange) ? farchange : false;
+            farchange = Boolean(farchange);
 
             if ((!farchange && carousel3d.getLock()) || (!carousel3d.loop && carousel3d.isFirstSlide())) {
                 return false;

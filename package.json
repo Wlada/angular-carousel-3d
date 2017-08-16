@@ -1,7 +1,7 @@
 {
   "name": "angular-carousel-3d",
   "homepage": "https://github.com/Wlada/angular-carousel-3d",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Angular Carousel 3d",
   "repository": "https://github.com/Wlada/angular-carousel-3d",
   "main": "dist/directive.js",

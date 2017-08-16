@@ -12,6 +12,7 @@
     "eslint:recommended"
   ],
   "rules": {
+    "keyword-spacing": 2,
     "no-mixed-spaces-and-tabs": 2,
     "no-trailing-spaces": 2
   }

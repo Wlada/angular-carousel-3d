@@ -1,7 +1,7 @@
 /*!
  * Name: angular-carousel-3d
  * GIT Page: https://github.com/Wlada/angular-carousel-3d
- * Version: 0.2.0 - 2017-06-23T13:58:44.022Z
+ * Version: 0.3.0 - 2017-08-16T11:43:45.637Z
  * License: MIT
  */
 
@@ -33,7 +33,7 @@
         var carousel3dSlide = {
             require: '^carousel3d',
             restrict: 'AE',
-            template: '<div class="slide-3d" ng-click="carousel3d.slideClicked($index)" ng-swipe-left="carousel3d.goPrev()" ng-swipe-right="carousel3d.goNext()" ng-transclude></div>',
+            template: '<div class="slide-3d" ng-click="carousel3d.slideClicked($index)" ng-swipe-left="carousel3d.options.dir === \'ltr\' ? carousel3d.goPrev() : carousel3d.goNext()" ng-swipe-right="carousel3d.options.dir === \'ltr\' ? carousel3d.goNext() : carousel3d.goPrev()" ng-transclude></div>',
             replace: true,
             transclude: true,
             link: linkFunc
@@ -217,13 +217,13 @@
                 getSlide(carousel3d.leftOutSlide).css(lCSS);
             }
 
-            if(carousel3d.autoRotationSpeed > 0) {
+            if (carousel3d.autoRotationSpeed > 0) {
                 vm.autoRotation = $interval(function() {
                     if (!vm.autoRotationLocked){
-                        if(vm.dir === 'rtl') {
-                            vm.goPrev();
-                        } else {
+                        if (vm.options.dir === 'ltr') {
                             vm.goNext();
+                        } else {
+                            vm.goPrev();
                         }
                     }
                 }, carousel3d.autoRotationSpeed);
@@ -259,11 +259,16 @@
         }
 
         function goSlide(index, motionless, farchange) {
+            var keepChanging = false;
 
             if (angular.isFunction(vm.onBeforeChange)) {
-                vm.onBeforeChange({
-                    index: carousel3d.currentIndex
-                });
+              keepChanging = vm.onBeforeChange({
+                index: carousel3d.currentIndex
+              });
+
+              if (keepChanging === false) {
+                return;
+              }
             }
 
             carousel3d.setCurrentIndex((index < 0 || index > carousel3d.total - 1) ? 0 : index);
@@ -293,8 +298,7 @@
         }
 
         function goNext(farchange) {
-
-            farchange = (farchange) ? farchange : false;
+            farchange = Boolean(farchange);
 
             if ((!farchange && carousel3d.getLock()) || (!carousel3d.loop && carousel3d.isLastSlide())) {
                 return false;
@@ -311,8 +315,7 @@
         }
 
         function goPrev(farchange) {
-
-            farchange = (farchange) ? farchange : false;
+            farchange = Boolean(farchange);
 
             if ((!farchange && carousel3d.getLock()) || (!carousel3d.loop && carousel3d.isFirstSlide())) {
                 return false;
@@ -413,8 +416,8 @@
             '       </div>' +
             '       <p ng-switch-when="false" class="carousel-3d-loader-error">There was a problem during load</p>' +
             '       <div ng-if="vm.controls" class="carousel-3d-controls">' +
-            '           <div class="carousel-3d-next arrow-left" ng-click="vm.goPrev()"></div>' +
-            '           <div class="carousel-3d-prev arrow-right" ng-click="vm.goNext()"></div>' +
+            '           <div class="carousel-3d-next arrow-left" ng-click="vm.options.dir === \'ltr\' ? vm.goNext() : vm.goPrev()"></div>' +
+            '           <div class="carousel-3d-prev arrow-right" ng-click="vm.options.dir === \'ltr\' ? vm.goPrev() : vm.goNext()"></div>' +
             '       </div>' +
             '   </div>' +
             '</div>',
@@ -427,7 +430,8 @@
                 onLastSlide: '&',
                 onBeforeChange: '&'
             },
-            controller: 'Carousel3dController as vm',
+            controller: 'Carousel3dController',
+            controllerAs: 'vm',
             bindToController: true,
             transclude: true
         };
