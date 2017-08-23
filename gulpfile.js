@@ -16,6 +16,7 @@ var open = require('gulp-open');
 var less = require('gulp-less');
 var order = require("gulp-order");
 var eslint = require('gulp-eslint');
+var babel = require('gulp-babel');
 
 var config = {
   pkg : JSON.parse(fs.readFileSync('./package.json')),
@@ -61,18 +62,24 @@ gulp.task('scripts', function() {
       .pipe(templateCache({module: 'carousel3d'}));
   }
 
+  function buildVendorsJS() {
+    return gulp.src('node_modules/babel-polyfill/dist/polyfill.js');
+  }
+
   function buildDistJS(){
     return gulp.src('src/*.js')
+      .pipe(babel())
       .pipe(plumber({
         errorHandler: handleError
       }));
   }
 
-  es.merge(buildDistJS(), buildTemplates())
+  es.merge(buildVendorsJS(), buildDistJS(), buildTemplates())
     .pipe(plumber({
       errorHandler: handleError
     }))
     .pipe(order([
+      'vendors.js',
       'carousel-3d.js',
       'template.js'
     ]))
