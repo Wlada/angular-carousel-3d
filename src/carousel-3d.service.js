@@ -90,6 +90,7 @@
             setStartSlide: setStartSlide,
             getSlides: getSlides,
             setSlides: setSlides,
+            getVisibleSlidesIndex: getVisibleSlidesIndex,
             setCurrentIndex: setCurrentIndex,
             getOuterWidth: getOuterWidth,
             getOuterHeight: getOuterHeight,
@@ -244,6 +245,33 @@
             }
 
             return this.slides;
+        }
+
+        function getVisibleSlidesIndex() {
+            // Build an object containing each slide number in their apparition order (even the hidden ones)
+            let visibleSlidesObj = {};
+            let value = this.currentIndex;
+            let key = Math.floor(this.total / 2);
+            let count = 0;
+
+            while (count !== this.total) {
+                visibleSlidesObj[key % this.total] = value;
+                key = ++key % this.total;
+                value = ++value % this.total;
+                count++;
+            }
+
+            // The object looks like an array so the values are sorted
+            let visibleSlidesArr = Object.values(visibleSlidesObj);
+
+            // Takes care of the direction
+            if (this.dir === 'ltr') {
+                visibleSlidesArr = visibleSlidesArr.reverse();
+            }
+
+            // Extracts only the visible slides
+            let indexInTab = visibleSlidesArr.findIndex(val => val === this.currentIndex);
+            return visibleSlidesArr.splice(indexInTab - Math.floor(this.visible / 2), this.visible);
         }
 
         function isLastSlide() {

@@ -206,7 +206,7 @@
             };
         }
 
-        function goSlide(index, motionless, farchange) {
+        function goSlide(index) {
             var keepChanging = false;
 
             if (angular.isFunction(vm.onBeforeChange)) {
@@ -241,62 +241,65 @@
             $timeout(function () {
                 animationEnd();
             }, carousel3d.animationSpeed);
-
-            return farchange;
         }
 
-        function goNext(farchange) {
-            farchange = Boolean(farchange);
-
-            if ((!farchange && carousel3d.getLock()) || (!carousel3d.loop && carousel3d.isLastSlide())) {
+        function goNext() {
+            if (carousel3d.getLock() || (!carousel3d.loop && carousel3d.isLastSlide())) {
                 return false;
             }
 
             if (carousel3d.isLastSlide()) {
-                goSlide(0, false, farchange);
-
+                goSlide(0, false);
             } else {
-                goSlide(carousel3d.currentIndex + 1, false, farchange);
+                goSlide(carousel3d.currentIndex + 1, false);
             }
 
-            return false;
+            return true;
         }
 
-        function goPrev(farchange) {
-            farchange = Boolean(farchange);
-
-            if ((!farchange && carousel3d.getLock()) || (!carousel3d.loop && carousel3d.isFirstSlide())) {
+        function goPrev() {
+            if (carousel3d.getLock() || (!carousel3d.loop && carousel3d.isFirstSlide())) {
                 return false;
             }
 
             if (carousel3d.isFirstSlide()) {
-                goSlide(carousel3d.total - 1, false, farchange);
-
+                goSlide(carousel3d.total - 1, false);
             } else {
-                goSlide(carousel3d.currentIndex - 1, false, farchange);
+                goSlide(carousel3d.currentIndex - 1, false);
             }
 
-            return false;
+            return true;
         }
 
         function goFar(index) {
-            var diff = (index === carousel3d.total - 1 && carousel3d.isFirstSlide()) ? -1 : (index - carousel3d.currentIndex);
+            if (index === carousel3d.currentIndex) { return; }
 
-            if (carousel3d.isLastSlide() && index === 0) {
-                diff = 1;
+            let visibleSlides = carousel3d.getVisibleSlidesIndex();
+
+            let indexInVisibleSlides = visibleSlides.findIndex(val => val === index);
+            if (indexInVisibleSlides < 0) { return; }
+            let currentIndexInVisibleSlides = visibleSlides.findIndex(val => val === carousel3d.currentIndex);
+            if (currentIndexInVisibleSlides < 0) { return; }
+
+            let diff = indexInVisibleSlides - currentIndexInVisibleSlides;
+
+            if (carousel3d.dir === 'ltr') {
+                diff = -diff;
             }
 
-            var diff2 = (diff < 0) ? -diff : diff,
-                timeBuff = 0;
+            let diff2 = Math.abs(diff);
 
-            for (var i = 0; i < diff2; i++) {
-                var timeout = (diff2 === 1) ? 0 : (timeBuff);
+            let timeBuff = 0;
+            const timeout = carousel3d.animationSpeed / diff2;
 
-                $timeout(function () {
-                    (diff < 0) ? goPrev(diff2) : goNext(diff2);
-                }, timeout);
-
-                timeBuff += (carousel3d.animationSpeed / (diff2));
+            for (let i = 0; i < diff2; i++, timeBuff += timeout) {
+                $timeout(() => {
+                    if (diff >= 0) {
+                        goNext(diff2);
+                    } else {
+                        goPrev(diff2);
+                    }
+                }, timeBuff);
             }
         }
 
