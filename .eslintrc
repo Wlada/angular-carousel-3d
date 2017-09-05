@@ -5,8 +5,12 @@
     "inject": true
   },
   "env": {
-    "node": true,
-    "jasmine": true
+    "es6": true,
+    "jasmine": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 6
   },
   "extends": [
     "eslint:recommended"
