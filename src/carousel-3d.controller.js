@@ -166,6 +166,11 @@
             }
 
             if (carousel3d.autoRotationSpeed > 0) {
+                
+                if (vm.autoRotation) {
+                    $interval.cancel(vm.autoRotation);
+                }
+                
                 vm.autoRotation = $interval(function() {
                     if (!vm.autoRotationLocked){
                         if (vm.options.dir === 'ltr') {
