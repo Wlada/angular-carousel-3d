@@ -27,7 +27,6 @@
     "babel-preset-es2015-ie": "6.7.x",
     "del": "3.0.x",
     "eslint": "4.5.x",
-    "event-stream": "3.3.x",
     "gulp": "3.9.x",
     "gulp-angular-templatecache": "2.0.x",
     "gulp-babel": "7.0.x",
